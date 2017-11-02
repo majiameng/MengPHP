@@ -114,7 +114,7 @@ class Base
             }
 
             //mengsave
-            if(!in_array($dispatch['module'][1],['index','','publics'])){
+            if(!in_array($dispatch['module'][1],['index','login','publics'])){
                 config('template.layout_on', true);
             }
 //            if ($dispatch['module'][1] != 'publics') {
