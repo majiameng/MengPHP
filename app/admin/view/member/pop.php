@@ -3,7 +3,7 @@
 <head>
     <title>{$_admin_menu_current['title']}-后台首页</title>
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <link rel="stylesheet" href="__ADMIN_JS__/layui/css/layui.css">
+    <link rel="stylesheet" href="__PUBLIC_LAYUI__/css/layui.css">
     <link rel="stylesheet" href="__ADMIN_CSS__/style.css?v={:time()}">
 </head>
 <body class="pb50">
@@ -61,7 +61,7 @@
         <a class="layui-btn layui-btn-primary" onclick="parent.layer.closeAll();">关闭</a>
     </div>
 </div>
-<script src="__ADMIN_JS__/layui/layui.js"></script>
+<script src="__PUBLIC_LAYUI__/layui.js"></script>
 <script>
 layui.config({
   base: '__ADMIN_JS__/'

@@ -29,6 +29,7 @@ class System extends Admin
      */
     public function index($group = 'base')
     {
+
         if ($this->request->isPost()) {
             $data = $this->request->post();
             $types = $data['type'];
@@ -89,6 +90,7 @@ class System extends Admin
 
             return $this->success('保存成功。', ROOT_DIR.$admin_path.'/admin/system/index/group/'.$group.'.html');
         }
+
         $tab_data = [];
         foreach (config('sys.config_group') as $key => $value) {
             $arr = [];
@@ -99,6 +101,7 @@ class System extends Admin
         $map = [];
         $map['group'] = $group;
         $map['status'] = 1;
+
         $data_list = ConfigModel::where($map)->order('sort,id')->column('id,name,title,group,url,value,type,options,tips');
         foreach ($data_list as $k => &$v) {
             $v['id'] = $v['name'];
@@ -106,6 +109,7 @@ class System extends Admin
                 $v['options'] = parse_attr($v['options']);
             }
         }
+
         // 模块配置
 //        $module = ModuleModel::where('status', 2)->column('name,title,config', 'name');
 //        foreach ($module as $mod) {
@@ -125,11 +129,14 @@ class System extends Admin
 //                }
 //            }
 //        }
+
         $tab_data['current'] = url('?group='.$group);
         $_GET['group'] = $group;
+
         $this->assign('data_list', $data_list);
         $this->assign('tab_data', $tab_data);
         $this->assign('tab_type', 1);
+
         return $this->fetch();
     }
 

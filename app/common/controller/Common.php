@@ -29,7 +29,7 @@ class Common extends Controller
      * 渲染后台模板
      * 模块区分前后台时需用此方法
      * @param string $template 模板路径
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return string
      */
     protected function afetch($template = '') {
@@ -46,7 +46,7 @@ class Common extends Controller
     /**
      * 渲染插件模板
      * @param string $template 模板名称
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return mixed
      */
     final protected function pfetch($template = '', $vars = [], $replace = [], $config = [])

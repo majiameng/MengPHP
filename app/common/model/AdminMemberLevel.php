@@ -1,13 +1,15 @@
 <?php
-// +----------------------------------------------------------------------
-// | HisiPHP框架[基于ThinkPHP5开发]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016-2018 http://www.hisiphp.com
-// +----------------------------------------------------------------------
-// | HisiPHP承诺基础框架永久免费开源，您可用于学习和商用，但必须保留软件版权信息。
-// +----------------------------------------------------------------------
-// | Author: 橘子俊 <364666827@qq.com>，开发者QQ群：50304283
-// +----------------------------------------------------------------------
+/**
+ * +------------------------------------------------------
+ * | Copyright (c) 2016-2018 http://www.majiameng.com
+ * +------------------------------------------------------
+ * | MengPHP后台框架[基于ThinkPHP5开发]
+ * +------------------------------------------------------
+ * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
+ * +------------------------------------------------------
+ * | DateTime: 2017/1/26 12:14
+ * +------------------------------------------------------
+ */
 namespace app\common\model;
 
 use think\Model;
@@ -28,7 +30,7 @@ class AdminMemberLevel extends Model
     /**
      * 获取所有会员等级(下拉列)
      * @param int $id 选中的ID
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return string
      */
     public static function getOption($id = 0)
@@ -48,7 +50,7 @@ class AdminMemberLevel extends Model
     /**
      * 删除会员
      * @param string $id 会员ID
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return bool
      */
     public function del($id = 0) 
@@ -98,7 +100,7 @@ class AdminMemberLevel extends Model
 
     /**
      * 获取所有会员等级
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return array
      */
     public static function getAll()

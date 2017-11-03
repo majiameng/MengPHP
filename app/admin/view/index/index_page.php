@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="__STATIC__/fonts/font-awesome/min.css">
 <div style="display:block;width:100%;overflow:hidden;">
 </div>
-{include file="admin@index/menu" /}
 <div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title">
         <li class="layui-this">后台首页</li>

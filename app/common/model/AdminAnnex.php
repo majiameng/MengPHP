@@ -1,13 +1,15 @@
 <?php
-// +----------------------------------------------------------------------
-// | HisiPHP框架[基于ThinkPHP5开发]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016-2018 http://www.hisiphp.com
-// +----------------------------------------------------------------------
-// | HisiPHP承诺基础框架永久免费开源，您可用于学习和商用，但必须保留软件版权信息。
-// +----------------------------------------------------------------------
-// | Author: 橘子俊 <364666827@qq.com>，开发者QQ群：50304283
-// +----------------------------------------------------------------------
+/**
+ * +------------------------------------------------------
+ * | Copyright (c) 2016-2018 http://www.majiameng.com
+ * +------------------------------------------------------
+ * | MengPHP后台框架[基于ThinkPHP5开发]
+ * +------------------------------------------------------
+ * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
+ * +------------------------------------------------------
+ * | DateTime: 2017/1/26 12:14
+ * +------------------------------------------------------
+ */
 namespace app\common\model;
 
 use app\common\model\AdminAnnexGroup as GroupModel;
@@ -36,7 +38,7 @@ class AdminAnnex extends Model
      * @param string $thumb 缩略图，参数为空默认调用系统配置，no直接关闭缩略图，如需生成 500x500 的缩略图，则 500x500多个规格请用";"隔开
      * @param string $thumb_type 缩略图方式
      * @param string $input 文件表单字段名
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return json
      */
     public static function upload($from = 'input', $group = 'sys', $water = '', $thumb = '', $thumb_type = '', $input = 'file')
@@ -54,7 +56,8 @@ class AdminAnnex extends Model
             case 'ueditor':
                 $input = 'upfile';
                 if (isset($_GET['action']) && $_GET['action'] == 'config') {
-                    $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents('.'.config('view_replace_str.__PUBLIC_JS__').'/editor/ueditor/config.json')), true);
+                    $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents('./'.(substr(config('view_replace_str.__PUBLIC_JS__'),strlen(ROOT_DIR))).'/editor/ueditor/config.json')), true);
+//                    $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents('.'.config('view_replace_str.__PUBLIC_JS__').'/editor/ueditor/config.json')), true);
                     echo json_encode($CONFIG);
                     exit;
                 }
@@ -223,14 +226,14 @@ class AdminAnnex extends Model
      */
     public static function favicon()
     {
-        // $file = request()->file('upload');
+//         $file = request()->file('upload');
         $data['file'] = '/favicon.ico';
         return self::result('文件上传成功。', 'input', 1, $data);
     }
 
     /**
      * 返回结果
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return array
      */
     private static function result($info = '', $from = 'input', $status = 0, $data = [])

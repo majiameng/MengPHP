@@ -47,7 +47,7 @@
                 <input type="text" class="layui-input" id="input-icon" name="icon" lay-verify="" autocomplete="off" placeholder="可自定义或使用系统图标">
             </div>
             <i class="" id="form-icon-preview"></i>
-            <a href="{:url('publics/icon?input=input-icon&show=form-icon-preview')}" class="layui-btn layui-btn-primary j-iframe-pop fl" title="选择图标">选择图标</a>
+            <a href="{:url('login/icon?input=input-icon&show=form-icon-preview')}" class="layui-btn layui-btn-primary j-iframe-pop fl" title="选择图标">选择图标</a>
         </div>
         <!--图片-->
         <div class="layui-form-item">
@@ -211,7 +211,7 @@
             <input type="text" class="layui-input" id="input-icon" name="icon" lay-verify="" autocomplete="off" placeholder="可自定义或使用系统图标">
         </div>
         <i class="" id="form-icon-preview"></i>
-        <a href="{:url('admin/publics/icon?input=input-icon&show=form-icon-preview')}" class="layui-btn layui-btn-primary j-iframe-pop fl">选择图标</a>
+        <a href="{:url('admin/login/icon?input=input-icon&show=form-icon-preview')}" class="layui-btn layui-btn-primary j-iframe-pop fl">选择图标</a>
     </div>
     <!--图片-->
     <div class="layui-form-item">

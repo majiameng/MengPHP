@@ -1,13 +1,15 @@
 <?php
-// +----------------------------------------------------------------------
-// | HisiPHP框架[基于ThinkPHP5开发]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016-2018 http://www.HisiPHP.com
-// +----------------------------------------------------------------------
-// | HisiPHP承诺基础框架永久免费开源，您可用于学习和商用，但必须保留软件版权信息。
-// +----------------------------------------------------------------------
-// | Author: 橘子俊 <364666827@qq.com>，开发者QQ群：50304283
-// +----------------------------------------------------------------------
+/**
+ * +------------------------------------------------------
+ * | Copyright (c) 2016-2018 http://www.majiameng.com
+ * +------------------------------------------------------
+ * | MengPHP后台框架[基于ThinkPHP5开发]
+ * +------------------------------------------------------
+ * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
+ * +------------------------------------------------------
+ * | DateTime: 2017/1/26 12:14
+ * +------------------------------------------------------
+ */
 namespace app\common\model;
 
 use think\Model;
@@ -26,7 +28,7 @@ class AdminLanguage extends Model
     /**
      * 入库
      * @param array $data 入库数据
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return bool
      */  
     public function storage($data = [])
@@ -69,7 +71,7 @@ class AdminLanguage extends Model
      * 获取语言包列表
      * @param  string $name 配置名
      * @param  bool $update 是否更新缓存
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return mixed
      */
     public function lists($name = '', $update = false)
@@ -94,7 +96,7 @@ class AdminLanguage extends Model
     /**
      * 安装语言包
      * @param  int $id 数据ID
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return mixed
      */
     private function install($id, $code, $pack) 
@@ -146,7 +148,7 @@ class AdminLanguage extends Model
     /**
      * 删除语言包
      * @param  int $id 数据ID
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return mixed
      */
     public function del($id = 0)

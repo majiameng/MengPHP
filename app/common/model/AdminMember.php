@@ -1,13 +1,15 @@
 <?php
-// +----------------------------------------------------------------------
-// | HisiPHP框架[基于ThinkPHP5开发]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016-2018 http://www.hisiphp.com
-// +----------------------------------------------------------------------
-// | HisiPHP承诺基础框架永久免费开源，您可用于学习和商用，但必须保留软件版权信息。
-// +----------------------------------------------------------------------
-// | Author: 橘子俊 <364666827@qq.com>，开发者QQ群：50304283
-// +----------------------------------------------------------------------
+/**
+ * +------------------------------------------------------
+ * | Copyright (c) 2016-2018 http://www.majiameng.com
+ * +------------------------------------------------------
+ * | MengPHP后台框架[基于ThinkPHP5开发]
+ * +------------------------------------------------------
+ * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
+ * +------------------------------------------------------
+ * | DateTime: 2017/1/26 12:14
+ * +------------------------------------------------------
+ */
 namespace app\common\model;
 
 use think\Model;
@@ -65,7 +67,7 @@ class AdminMember extends Model
     /**
      * 注册
      * @param array $data 参数，可传参数username,password,email,mobile,nick
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     public function register($data = [])
@@ -131,7 +133,7 @@ class AdminMember extends Model
     /**
      * 授权登录注册，除了昵称无其他任何注册信息，只为了提供授权登录时绑定member_id
      * @param string $nick 昵称
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     public function oauthRegister($nick = '')
@@ -166,7 +168,7 @@ class AdminMember extends Model
      * @param string $password 密码
      * @param bool $remember 记住登录 TODO
      * @param string $field 登陆之后缓存的字段
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     public function login($account = '', $password = '', $remember = false, $field = 'nick,username,mobile,email,avatar', $token = true)
@@ -242,7 +244,7 @@ class AdminMember extends Model
 
     /**
      * 判断是否登录
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return bool|array
      */
     public function isLogin() 
@@ -257,7 +259,7 @@ class AdminMember extends Model
 
     /**
      * 自动登陆
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @param bool $oauth 第三方授权登录
      * @return bool|array
      */
@@ -291,7 +293,7 @@ class AdminMember extends Model
 
     /**
      * 退出登陆
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return bool
      */
     public static function logout() 
@@ -304,7 +306,7 @@ class AdminMember extends Model
     /**
      * 数据签名认证
      * @param array $data 被认证的数据
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return string 签名
      */
     public function dataSign($data = [])

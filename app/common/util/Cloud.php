@@ -37,7 +37,7 @@ class Cloud {
     /**
      * 架构函数
      * @param string $path  目录路径
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      */
     public function __construct($identifier = '', $path = './') {
         $this->identifier = $identifier;
@@ -47,7 +47,7 @@ class Cloud {
 
     /**
      * 获取服务器地址
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return string
      */
     public function apiUrl() {
@@ -56,7 +56,7 @@ class Cloud {
 
     /**
      * 获取错误信息
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return string
      */
     public function getError() {
@@ -66,7 +66,7 @@ class Cloud {
     /**
      * 需要发送的数据
      * @param  array $data 数据
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return obj
      */
     public function data($data) {
@@ -76,7 +76,7 @@ class Cloud {
     /**
      * [api 请求接口]
      * @param  string $api 接口
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return array
      */
     public function api($api) {
@@ -86,7 +86,7 @@ class Cloud {
     /**
      * [type 请求类型]
      * @param  string $type 请求类型(get,post)
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return obj
      */
     public function type($type){
@@ -97,7 +97,7 @@ class Cloud {
     /**
      * 升级包下载
      * @param  string $api 接口
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return array
      */
     public function down($api) {
@@ -138,7 +138,7 @@ class Cloud {
     /**
      * [run 执行接口]
      * @return array
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      */
     private function run($request = true){
         $params['format'] = 'json';
@@ -168,7 +168,7 @@ class Cloud {
     /**
      * 组装数据返回格式
      * @return array
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      */
     private function _response($result) {
         if (is_file($this->lock)) {

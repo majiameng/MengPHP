@@ -4,19 +4,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <title>后台管理系统</title>
+    <title>{:config('base.site_name')}-后台管理系统</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{:config('base.site_favicon')}">
     <link href="__ADMIN_CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="__STATIC__/fonts/typicons/min.css?v=4.4.0" rel="stylesheet">
     <link href="__STATIC__/fonts/font-awesome/min.css?v=4.4.0" rel="stylesheet">
     <link href="__ADMIN_CSS__/animate.min.css" rel="stylesheet">
     <link href="__ADMIN_CSS__/style.min.css?v=4.1.0" rel="stylesheet">
     <link rel="stylesheet" href="__PUBLIC_LAYUI__/css/layui.css">
+    <!-- 字体 -->
+    <link rel="stylesheet" href="__ADMIN_CSS__/style.css">
+    <link rel="stylesheet" href="__STATIC__/fonts/typicons/min.css">
+    <link rel="stylesheet" href="__STATIC__/fonts/font-awesome/min.css">
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <div id="wrapper">
@@ -50,7 +54,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         <div class="layui-logo">
-                            <img src="__PUBLIC_IMG__/logo.png" alt="{:config('mengphp.name')}" style="width: 180px">
+                            <img src="{:config('base.site_logo')}" alt="{:config('base.site_name')}" style="width: 180px">
                         </div>
 
                     </div>

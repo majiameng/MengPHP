@@ -107,7 +107,7 @@ class AdminMenu extends Model
      * @author 马佳萌 <666@majiameng.com>
      * @return array
      */
-    public static function getAllChild($pid = 0, $status = 1, $field = 'id,pid,module,title,url,param,target,icon,sort,status', $level = 0, $data = [])
+    public static function getAllChild($pid = 0, $status = 1, $field = 'id,pid,module,title,module,controller,action,param,target,icon,sort,status', $level = 0, $data = [])
     {
         $cache_tag = md5('_admin_child_menu'.$pid.$field.$status.dblang('admin'));
         $trees = [];
@@ -176,7 +176,7 @@ class AdminMenu extends Model
                 $map['status'] = 1;
                 $map['nav'] = 1;
                 $map['uid'] = ['in', '0,'.ADMIN_ID];
-                $data = self::where($map)->order('sort asc')->column('id,pid,module,controller,action,title,url,param,target,icon');
+                $data = self::where($map)->order('sort asc')->column('id,pid,title,module,controller,action,param,target,icon');
                 $data = array_values($data); 
             }
 
@@ -227,8 +227,10 @@ class AdminMenu extends Model
         }
         $map = $menu = [];
         $map['id'] = $id;
-        $row = self::where($map)->field('id,pid,title,url,param')->find();
+        $row = self::where($map)->field('id,pid,title,module,controller,action,param')->find();
         if ($row->pid > 0) {
+            $row['url'] = $row['module'].'/'.$row['controller'].'/'.$row['action'];
+
             if (isset($row->lang->title)) {
                 $row->title = $row->lang->title;
             }
@@ -252,37 +254,33 @@ class AdminMenu extends Model
 
         $map = [];
         if (empty($id)) {
-            $model      = request()->module();
-            $controller = request()->controller();
-            $action     = request()->action();
-            $map['url'] = $model.'/'.$controller.'/'.$action;
+            $map['module']      = request()->module();
+            $map['controller'] = request()->controller();
+            $map['action']     = request()->action();
         } else {
             $map['id'] = (int)$id;
         }
-        if(!in_array($controller, ['index'])){
-//            return 1;
-//            array(4) { ["id"]=> int(24) ["title"]=> string(12) "后台首页" ["url"]=> string(17) "admin/index/index" ["param"]=> string(0) "" }
-//            return true;
-
-        }
-
 
         $map['status'] = 1;
-        $rows = self::where($map)->column('id,title,url,param');
 
+        //判断菜单中有无当前的url
+        $rows = self::where($map)->column('id,title,module,controller,action,param');
         if (!$rows) {
             return false;
         }
         sort($rows);
         if (count($rows) > 1) {
+            //有分组切换
             $_get = input('param.');
             if (!$_get) {
                 foreach ($rows as $k => $v) {
                     if ($v['param'] == '') {
+                        $rows[$k]['url'] = $rows[$k]['module'].'/'.$rows[$k]['controller'].'/'.$rows[$k]['action'];
                         return $rows[$k];
                     }
                 }
             }
+
             foreach ($rows as $k => $v) {
                 if ($v['param']) {
                     parse_str($v['param'], $param);
@@ -295,21 +293,29 @@ class AdminMenu extends Model
                     }
                     $sqlmap = [];
                     $sqlmap['param'] = http_build_query($param_arr);
-                    $sqlmap['url'] =  $map['url'];
-                    $res = self::where($sqlmap)->field('id,title,url,param')->find();
+                    $sqlmap['module'] =  $map['module'];
+                    $sqlmap['controller'] =  $map['controller'];
+                    $sqlmap['action'] =  $map['action'];
+
+                    //判断分组参数是否正确
+                    $res = self::where($sqlmap)->field('id,title,module,controller,action,param')->find();
                     if ($res) {
+                        $res['url'] = $res['module'].'/'.$res['controller'].'/'.$res['action'];
                         return $res;
                     }
                 }
             }
+
             $map['param'] = '';
-            $res = self::where($map)->field('id,title,url,param')->find();
+            $res = self::where($map)->field('id,title,module,controller,action,param')->find();
             if ($res) {
+                $rew['url'] = $res['module'].'/'.$res['controller'].'/'.$res['action'];
                 return $res;
             } else {
                 return false;
             }
         }
+        $rows[0]['url'] = $rows[0]['module'].'/'.$rows[0]['controller'].'/'.$rows[0]['action'];
         return $rows[0];
     }
 

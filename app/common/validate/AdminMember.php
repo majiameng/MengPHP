@@ -55,7 +55,7 @@ class AdminMember extends Validate
     
     /**
      * 检查邮箱
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     protected function checkEmail($value, $rule, $data)
@@ -68,7 +68,7 @@ class AdminMember extends Validate
 
     /**
      * 检查用户名
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     protected function checkUsername($value, $rule, $data)
@@ -86,7 +86,7 @@ class AdminMember extends Validate
 
     /**
      * 检查手机号
-     * @author 橘子俊 <364666827@qq.com>
+     * @author 马佳萌 <666@majiameng.com>
      * @return stirng|array
      */
     protected function checkMobile($value, $rule, $data)

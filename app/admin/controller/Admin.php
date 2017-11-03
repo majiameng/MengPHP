@@ -41,7 +41,6 @@ class Admin extends Common
         define('ADMIN_ROLE', $login['role_id']);
 
         $c_menu = MenuModel::getInfo();
-
         if (!$c_menu) {
             return $this->error('节点不存在或者已禁用！');
         }
@@ -61,12 +60,14 @@ class Admin extends Common
         $log = [];
         $log['uid'] = ADMIN_ID;
         $log['title'] = $c_menu['title'];
+
         $log['url'] = $c_menu['url'];
         $log['param'] = json_encode(input('param.'));
         $log['remark'] = '浏览数据';
         if ($this->request->isPost()) {
             $log['remark'] = '保存数据';
         }
+
         $log_result = LogModel::where($log)->find();
         $log['ip'] = $this->request->ip();
         if (!$log_result) {
@@ -79,36 +80,36 @@ class Admin extends Common
 
         // 如果不是ajax请求，则读取菜单
         if (!$this->request->isAjax()) {
+            //获取用户信息
             $this->assign('_admin_user_info', $login);
 
             // 获取当前访问的节点信息
             $this->assign('_admin_menu_current', $c_menu);
             $_bread_crumbs = MenuModel::getBrandCrumbs($c_menu['id']);
             $this->assign('_bread_crumbs', $_bread_crumbs);
+
             // 获取当前访问的节点的顶级节点
             $this->assign('_admin_menu_parents', current($_bread_crumbs));
+
             // 获取导航菜单
             $this->assign('_admin_menu', MenuModel::getMainMenu());
 
             // 分组切换类型 0单个分组[有链接]，1分组切换[有链接]，2分组切换[无链接]，3无需分组切换，具体请看后台layout.php
             $this->assign('tab_type', 0);
-            // tab切换数据
-            // $tab_data = [
-            //     ['title' => '后台首页', 'url' => 'admin/index/index'],
-            // ];
-            // current 可不传
-            // $this->assign('tab_data', ['menu' => $tab_data, 'current' => 'admin/index/index']);
 
+            // tab切换数据
             $this->assign('tab_data', '');
 
             // 列表页默认数据输出变量
             $this->assign('data_list', '');
             $this->assign('pages', '');
+
             // 编辑页默认数据输出变量
             $this->assign('data_info', '');
             $this->assign('admin_user', $login);
             $this->assign('languages', model('AdminLanguage')->lists());
         }
+
     }
 
     /**

@@ -69,6 +69,18 @@ class Login extends Common
     }
 
 
+    /**
+     * 首页 页面
+     * @author 马佳萌 <666@majiameng.com>
+     * @return mixed
+     * @return mixed
+     */
+    public function index_page()
+    {
+        return $this->fetch('index/index_page');
+    }
+
+
 
     /**
      * 退出登陆

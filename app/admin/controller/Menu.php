@@ -28,7 +28,10 @@ class Menu extends Admin
      */
     public function index($q = '')
     {
+
+
         $menu_list = MenuModel::getAllChild(0, 0);
+
         $tab_data = [];
         foreach ($menu_list as $key => $value) {
             $tab_data['menu'][$key]['title'] = $value['title'];

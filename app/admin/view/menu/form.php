@@ -43,7 +43,7 @@
             <input type="text" class="layui-input field-icon" id="input-icon" name="icon" lay-verify="" autocomplete="off" placeholder="可自定义或使用系统图标">
         </div>
         <i class="{if condition="isset($data_info['icon'])"}{$data_info['icon']}{/if}" id="form-icon-preview"></i>
-        <a href="{:url('publics/icon?input=input-icon&show=form-icon-preview')}" title="选择图标" class="layui-btn layui-btn-primary j-iframe-pop fl">选择图标</a>
+        <a href="{:url('login/icon?input=input-icon&show=form-icon-preview')}" title="选择图标" class="layui-btn layui-btn-primary j-iframe-pop fl">选择图标</a>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">菜单链接</label>

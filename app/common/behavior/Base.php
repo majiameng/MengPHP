@@ -114,7 +114,7 @@ class Base
             }
 
             //mengsave
-            if(!in_array($dispatch['module'][1],['index','','publics'])){
+            if(!in_array($dispatch['module'][1],['index','login','publics'])){
                 config('template.layout_on', true);
             }
 //            if ($dispatch['module'][1] != 'publics') {
@@ -133,6 +133,7 @@ class Base
             if (empty($module)) {
                 $module = config('default_module');
             }
+
             if ($module != 'index') {
                 config('url_controller_layer', 'home');
                 // 定义前台模板路径[分手机和PC]
