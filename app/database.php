@@ -16,9 +16,9 @@ return [
     // 数据库名
     'database'        => 'mengphp',
     // 用户名
-    'username'        => 'mysql',
+    'username'        => 'root',
     // 密码
-    'password'        => 'mysql',
+    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
