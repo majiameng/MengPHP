@@ -49,7 +49,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">数据库前缀</label>
             <div class="layui-input-inline w200">
-                <input type="text" class="layui-input" name="prefix" lay-verify="title" value="mengphp_">
+                <input type="text" class="layui-input" name="prefix" lay-verify="title" value="meng_">
             </div>
             <div class="layui-form-mid layui-word-aux">建议使用默认,数据库前缀必须带 '_'</div>
         </div>
