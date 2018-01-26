@@ -216,7 +216,7 @@ INFO;
         // 获取站点根目录
         $root_dir = request()->baseFile();
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);
-        return $this->success('系统安装成功，欢迎您使用HisiPHP开源框架', $root_dir.'admin.php');
+        return $this->success('系统安装成功，欢迎您使用MengPHP后台管理框架', $root_dir.'admin.php');
     }
     
     /**
@@ -329,7 +329,7 @@ INFO;
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
+// | Author: majiameng <666@majiameng.com>
 // +----------------------------------------------------------------------
 return [
     // 数据库类型
