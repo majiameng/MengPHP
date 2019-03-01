@@ -17,11 +17,11 @@ header('Content-Type:text/html;charset=utf-8');
 if(version_compare(PHP_VERSION,'5.5.0','<'))  die('PHP版本过低，最少需要PHP5.5，请升级PHP版本！');
 
 // 定义应用目录
-define('APP_PATH', __DIR__ . '/app/');
+define('APP_PATH', __DIR__ . '/../app/');
 
 // 检查是否安装
 if(!is_file(APP_PATH.'install/install.lock')) {
-    if (!is_writable(__DIR__ . '/runtime')) {
+    if (!is_writable(__DIR__ . '/../runtime')) {
         echo '请开启[runtime]文件夹的读写权限';
         exit;
     }
@@ -29,7 +29,7 @@ if(!is_file(APP_PATH.'install/install.lock')) {
 }
 
 // 加载框架引导文件
-require __DIR__ . '/thinkphp/start.php';
+require __DIR__ . '/../thinkphp/start.php';
 
 /**
  *
