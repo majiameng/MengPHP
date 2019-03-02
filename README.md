@@ -4,6 +4,13 @@ MengPHP后台管理系统 1.0.0
 
 MengPHP 基于ThinkPHP5+layui开发的一套开源PHP快速开发框架，默认集成了权限管理、模块管理、插件管理、钩子管理、数据库管理等常用功能([http://majiameng.com](http://majiameng.com))我们诚邀您的加入。
 
+
+网站事例 [http://mengphp.majiameng.com](http://mengphp.majiameng.com)
+
+帐号: admin
+
+密码: admin123
+
 ## 目录结构
 ```
 www  WEB部署目录（或者子目录）
