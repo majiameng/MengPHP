@@ -27,18 +27,22 @@ www  WEB部署目录（或者子目录）
 │   ├─route.php         路由配置文件
 │   ├─tags.php          应用行为扩展定义文件
 ├─extend                扩展类库目录
+│
+├─public                WEB目录（对外访问目录）
+│  ├─static            静态资源目录（后台用）
+│  ├─upload                文件上传目录
+│  ├─admin.php         后台管理入口文件
+│  ├─index.php         首页入口文件
+│  ├─router.php        快速测试文件
+│  ├─robots.txt        爬虫协议
+│  └─.htaccess         用于apache的重写
 ├─backup                备份目录（数据库、升级文件）
-├─static                静态资源目录（后台用）
 ├─thinkphp              ThinkPHP核心框架目录
-├─upload                文件上传目录
 ├─vendor                第三方类库目录（Composer）
 ├─composer.json         Composer json文件
-├─admin.php             后台管理入口文件
-├─index.php             首页入口文件
 ├─LICENSE.txt           Apache2开源协议
-├─.htaccess             伪静态配置文件
-├─robots.txt            爬虫协议
 ├─version.php           系统版本文件
+
 ```
 
 

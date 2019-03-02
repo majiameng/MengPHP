@@ -253,13 +253,13 @@ INFO;
     private function checkDir()
     {
         $items = [
-            ['dir', './app', '读写', '读写', 'ok'],
-            ['dir', './extend', '读写', '读写', 'ok'],
-            ['dir', './backup', '读写', '读写', 'ok'],
+            ['dir', './../app', '读写', '读写', 'ok'],
+            ['dir', './../extend', '读写', '读写', 'ok'],
+            ['dir', './../backup', '读写', '读写', 'ok'],
             ['dir', './static', '读写', '读写', 'ok'],
             ['dir', './upload', '读写', '读写', 'ok'],
-            ['file', './app/database.php', '读写', '读写', 'ok'],
-            ['file', './version.php', '读写', '读写', 'ok'],
+            ['file', './../app/database.php', '读写', '读写', 'ok'],
+            ['file', './../version.php', '读写', '读写', 'ok'],
             ['file', './admin.php', '读写', '读写', 'ok'],
         ];
         foreach ($items as &$v) {
