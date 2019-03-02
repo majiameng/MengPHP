@@ -16,6 +16,7 @@ class Index
 {
     public function index()
     {
-        return '123';
+        $data = '这里是前台首页,<a href="./admin.php">前往后台</a>';
+        return $data;
     }
 }
