@@ -263,8 +263,8 @@ return [
     /**----------↓↓↓↓---第三方配置----↓↓↓↓----------------------*/
     // 阿里云 OSS配置
     'AliyunOss'   =>  [
-        "AccessKeyID"      => 'LTAIs69XCoHwAmQN',
-        "AccessKeySecret"  => '2MSFmteebW49J8pQz9SFPGhiqExBEc',
+        "AccessKeyID"      => 'LTAIs69XCoH******',
+        "AccessKeySecret"  => '2MSFmteebW49J8pQz9*******',
         "EndPoint"      => 'http://oss-cn-beijing.aliyuncs.com',
         "Bucket"        => 'majiameng',
     ],
@@ -272,8 +272,8 @@ return [
     "SERVER_NAME"        => 'www.qq.com',// 项目url
     // 阿里云 OSS配置
     'Sian'   =>  [
-        "AppKey"      => '4075596540',
-        "AppSecret"  => 'fa668e9d2819a57c7bef25cd27d032ab',
+        "AppKey"      => '40755*****',
+        "AppSecret"  => 'fa668e9d2819a5************',
     ],
 
 
