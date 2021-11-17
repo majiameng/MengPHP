@@ -1,0 +1,17 @@
+.idea
+*.log
+*.pdm
+/apidoc
+.pdm
+.js
+.env
+*.pdb
+tests
+*.sws
+.git
+.DS_Store
+*.tags
+*.tags_sorted_by_file
+404.html
+index.html
+/vendor/
