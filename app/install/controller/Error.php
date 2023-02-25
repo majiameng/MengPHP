@@ -42,7 +42,7 @@ class Error extends Common
                 }
                 return self::step5();
                 break;
-            
+
             default:
                 session('install_error', false);
                 return $this->fetch('index');
@@ -63,7 +63,7 @@ class Error extends Common
         $this->assign('data', $data);
         return $this->fetch('step2');
     }
-    
+
     /**
      * 第三步：初始化配置
      * @return mixed
@@ -72,7 +72,7 @@ class Error extends Common
     {
         return $this->fetch('step3');
     }
-    
+
     /**
      * 第四步：执行安装
      * @return mixed
@@ -136,7 +136,7 @@ class Error extends Common
             return $this->error('非法访问');
         }
     }
-    
+
     /**
      * 第五步：数据库安装
      * @return mixed
@@ -166,7 +166,7 @@ class Error extends Common
         $sql_file = APP_PATH.'install/sql/install.sql';
         if (file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
-            $sql_list = parse_sql($sql, 0, ['hisiphp_' => $config['prefix']]);
+            $sql_list = parse_sql($sql, 0, ['mengphp_' => $config['prefix']]);
             if ($sql_list) {
                 $sql_list = array_filter($sql_list);
                 foreach ($sql_list as $v) {
@@ -218,7 +218,7 @@ INFO;
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);
         return $this->success('系统安装成功，欢迎您使用MengPHP后台管理框架', $root_dir.'admin.php');
     }
-    
+
     /**
      * 环境检测
      * @return array
@@ -245,7 +245,7 @@ INFO;
 
         return $items;
     }
-    
+
     /**
      * 目录权限检查
      * @return array
@@ -284,7 +284,7 @@ INFO;
         }
         return $items;
     }
-    
+
     /**
      * 函数及扩展检查
      * @return array
@@ -313,7 +313,7 @@ INFO;
 
         return $items;
     }
-    
+
     /**
      * 生成数据库配置文件
      * @return array

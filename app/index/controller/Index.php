@@ -12,7 +12,9 @@
  */
 namespace app\index\controller;
 
-class Index
+use think\Controller;
+
+class Index extends Controller
 {
     public function index()
     {
