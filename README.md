@@ -7,9 +7,9 @@ MengPHP 基于ThinkPHP5+layui开发的一套开源PHP快速开发框架，默认
 
 网站事例 [http://mengphp.majiameng.com](http://mengphp.majiameng.com)
 
-帐号: admin
+帐号: tinymeng
 
-密码: admin123
+密码: tinymeng
 
 ## 目录结构
 ```
