@@ -138,7 +138,7 @@ if (!function_exists('random')) {
         }
         $max = strlen($seed) - 1;
         for($i = 0; $i < $length; $i++) {
-            $hash .= $seed{mt_rand(0, $max)};
+            $hash .= $seed[mt_rand(0, $max)];
         }
         return $hash;
     }
@@ -497,11 +497,11 @@ if (!function_exists('parse_sql')) {
 
             // 只返回一条语句
             if ($limit == 1) {
-                return implode($pure_sql, "");
+                return implode("",$pure_sql);
             }
 
             // 以数组形式返回sql语句
-            $pure_sql = implode($pure_sql, "\n");
+            $pure_sql = implode("\n",$pure_sql);
             $pure_sql = explode(";\n", $pure_sql);
             return $pure_sql;
         } else {
