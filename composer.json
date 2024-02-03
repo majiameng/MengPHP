@@ -27,7 +27,9 @@
         "liliuwei/thinkphp-jump": "^2.0",
         "topthink/think-multi-app": "^1.0",
         "topthink/think-captcha": "^3.0",
-        "topthink/think-template": "^3.0"
+        "topthink/think-template": "^3.0",
+        "tinymeng/tools": "^1.2",
+        "tinymeng/oauth": "^2.2"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",

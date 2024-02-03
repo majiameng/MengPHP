@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed146d22c4843d9b4140f7a2d3efa64b",
+    "content-hash": "83097c04fb151a61375e0518d4b1bec3",
     "packages": [
         {
             "name": "league/flysystem",
@@ -411,6 +411,107 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00"
+        },
+        {
+            "name": "tinymeng/oauth",
+            "version": "v2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/majiameng/OAuth2.git",
+                "reference": "d850f49a404a8ab6914721113b2d9c0a70371f02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/majiameng/OAuth2/zipball/d850f49a404a8ab6914721113b2d9c0a70371f02",
+                "reference": "d850f49a404a8ab6914721113b2d9c0a70371f02",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "tinymeng/tools": "^1.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tinymeng\\OAuth2\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JiaMeng Ma",
+                    "email": "666@majiameng.com",
+                    "homepage": "https://www.majiameng.com"
+                }
+            ],
+            "description": "wechat sina qq alipay twitter google line facebook oauth",
+            "keywords": [
+                "alipay-login",
+                "github-login",
+                "login",
+                "oauth-login",
+                "php",
+                "qq-login",
+                "sina-login",
+                "tinymeng",
+                "wx-login"
+            ],
+            "support": {
+                "issues": "https://github.com/majiameng/OAuth2/issues",
+                "source": "https://github.com/majiameng/OAuth2/tree/v2.2.3"
+            },
+            "time": "2023-07-30T03:48:55+00:00"
+        },
+        {
+            "name": "tinymeng/tools",
+            "version": "v1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/majiameng/tools.git",
+                "reference": "a16c4b550e9fbede32159779a4507cd97133208b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/majiameng/tools/zipball/a16c4b550e9fbede32159779a4507cd97133208b",
+                "reference": "a16c4b550e9fbede32159779a4507cd97133208b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [],
+                "psr-4": {
+                    "tinymeng\\tools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JiaMeng Ma",
+                    "email": "666@majiameng.com",
+                    "homepage": "http://majiameng.com"
+                }
+            ],
+            "description": "Integrate third-party logins",
+            "keywords": [
+                "php",
+                "php-tools",
+                "tinymeng",
+                "tools"
+            ],
+            "support": {
+                "issues": "https://github.com/majiameng/tools/issues",
+                "source": "https://github.com/majiameng/tools/tree/v1.2.4"
+            },
+            "time": "2023-02-10T04:56:10+00:00"
         },
         {
             "name": "topthink/framework",
