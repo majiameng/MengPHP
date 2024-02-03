@@ -3,14 +3,15 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
+use think\facade\View;
 
 /**
  * 后台开发工具控制器
@@ -23,9 +24,9 @@ class Develop extends Admin
     /**
      * 初始化方法
      */
-    protected function _initialize()
+    protected function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
 
         $tab_data['menu'] = [
             [
@@ -46,9 +47,9 @@ class Develop extends Admin
      */
     public function lists()
     {
-        $this->assign('tab_data', $this->tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch();
+        View::assign('tab_data', $this->tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch();
     }
 
     /**
@@ -58,8 +59,8 @@ class Develop extends Admin
      */
     public function edit()
     {
-        $this->assign('tab_data', $this->tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch();
+        View::assign('tab_data', $this->tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch();
     }
 }

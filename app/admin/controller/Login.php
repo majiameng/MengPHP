@@ -3,16 +3,19 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
-use org\Verify;
+use app\admin\model\AdminUser;
 use app\common\controller\Common;
+use think\facade\View;
+use think\Request;
+
 
 /**
  * 后台登陆控制器
@@ -25,11 +28,16 @@ class Login extends Common
      * @author 马佳萌 <666@majiameng.com>
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $model = model('AdminUser');
+        $model = new AdminUser();
 
         if ($this->request->isPost()) {
+            $check = $request->checkToken('__token__');
+            if(false === $check) {
+                return $this->error("invalid token", url('index'));
+            }
+
             $username = input('post.username/s');
             $password = input('post.password/s');
             $code = input('post.code/s');
@@ -39,7 +47,6 @@ class Login extends Common
 //            if (!$verify->check($code)) {
 //                return json(['code' => -4, 'data' => '', 'msg' => '验证码错误']);
 //            }
-
             if (!$model->login($username, $password)) {
                 return $this->error($model->getError(), url('index'));
             }
@@ -47,10 +54,10 @@ class Login extends Common
         }
 
         if ($model->isLogin()) {
-            $this->redirect(url('index/index', '', true, true));
+            $this->redirect(url('index/index', [], true, true));
         }
 
-        return $this->fetch('login/index');
+        return View::fetch('login/index');
     }
 
     /**
@@ -77,7 +84,7 @@ class Login extends Common
      */
     public function index_page()
     {
-        return $this->fetch('index/index_page');
+        return View::fetch('index/index_page');
     }
 
 
@@ -88,7 +95,7 @@ class Login extends Common
      * @return mixed
      */
     public function logout(){
-        model('AdminUser')->logout();
+        (new AdminUser)->logout();
         $this->redirect(ROOT_DIR);
     }
 
@@ -99,7 +106,7 @@ class Login extends Common
      * @return mixed
      */
     public function icon() {
-        return $this->fetch();
+        return View::fetch();
     }
 
     /**
@@ -110,7 +117,7 @@ class Login extends Common
     public function unlocked()
     {
         $_pwd = input('post.password');
-        $model = model('AdminUser');
+        $model = (new AdminUser);
         $login = $model->isLogin();
         if (!$login) {
             return $this->error('登录信息失效，请重新登录！');

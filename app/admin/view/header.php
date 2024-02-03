@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>{$_admin_menu_current['title']} -  Powered by {:config('hisiphp.name')}</title>
+    <title>{$_admin_menu_current['title']} -  Powered by {:config('mengphp.name')}</title>
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <link rel="stylesheet" href="__PUBLIC_LAYUI__/css/layui.css">
     <link rel="stylesheet" href="__ADMIN_CSS__/style.css">
@@ -12,7 +12,7 @@
         var ADMIN_PATH = "{$_SERVER['SCRIPT_NAME']}", LAYUI_OFFSET = 0;
         layui.config({
             base: '__ADMIN_JS__/',
-            version: '{:config("hisiphp.version")}'
+            version: '{:config("mengphp.version")}'
         }).use('global');
     </script>
 </head>

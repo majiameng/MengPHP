@@ -16,5 +16,5 @@
 </head>
 <body>
 <div class="header">
-    <h1>感谢您选择{:config('hisiphp.name')}</h1>
+    <h1>感谢您选择{:config('mengphp.name')}</h1>
 </div>

@@ -35,8 +35,8 @@
             {/if}
             <li class="layui-nav-item meng-nav-my">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    佳萌
+                    <img src="https://avatars.githubusercontent.com/u/24783993?v=4" class="layui-nav-img">
+                    Mengphp
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>

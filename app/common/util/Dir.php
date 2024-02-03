@@ -3,11 +3,11 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\common\util;
@@ -26,14 +26,13 @@ class Dir {
         $this->listFile($path, $pattern);
     }
 
-
     /**
      * 生成目录
      * @param  string  $path 目录
      * @param  integer $mode 权限
      * @return boolean
      */
-    protected function create($path, $mode = 0755) {
+    static public function create($path, $mode = 0755) {
       if(is_dir($path)) return TRUE;
       $path = str_replace("\\", "/", $path);
       if(substr($path, -1) != '/') $path = $path.'/';

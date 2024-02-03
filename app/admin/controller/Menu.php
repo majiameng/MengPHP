@@ -3,16 +3,18 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 
 use app\admin\model\AdminMenu as MenuModel;
+use app\admin\model\AdminModule;
+use think\facade\View;
 
 /**
  * 菜单控制器
@@ -38,10 +40,10 @@ class Menu extends Admin
         }
         $push['title'] = '模块排序';
         array_push($tab_data['menu'], $push);
-        $this->assign('menu_list', $menu_list);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch();
+        View::assign('menu_list', $menu_list);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch();
     }
 
     /**
@@ -58,9 +60,9 @@ class Menu extends Admin
             }
             return $this->success('保存成功。', url('index'));
         }
-        $this->assign('module_option', model('AdminModule')->getOption($mod));
-        $this->assign('menu_option', self::menuOption($pid));
-        return $this->fetch('form');
+        View::assign('module_option', (new AdminModule)->getOption($mod));
+        View::assign('menu_option', self::menuOption($pid));
+        return View::fetch('form');
     }
 
     /**
@@ -88,10 +90,10 @@ class Menu extends Admin
             $row['title'] = $row['lang']['title'];
         }
         
-        $this->assign('data_info', $row);
-        $this->assign('module_option', model('AdminModule')->getOption($row['module']));
-        $this->assign('menu_option', self::menuOption($row['pid']));
-        return $this->fetch('form');
+        View::assign('data_info', $row);
+        View::assign('module_option',(new AdminModule)->getOption($row['module']));
+        View::assign('menu_option', self::menuOption($row['pid']));
+        return View::fetch('form');
     }
 
     /**

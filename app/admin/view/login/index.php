@@ -36,9 +36,9 @@
                 <input type="password" class="form-control pword m-b" placeholder="密码" id="password" />
                 <div style="margin-bottom:70px">
                     <input type="text" class="form-control" placeholder="验证码" style="color:black;width:120px;float:left;margin:0px 0px;" name="code" id="code"/>
-                    <img src="{:url('checkVerify')}" onclick="javascript:this.src='{:url('checkVerify')}?tm='+Math.random();" style="float:right;cursor: pointer"/>
+                    <img src="{:captcha_src()}" onclick="javascript:this.src='{:captcha_src()}?tm='+Math.random();" style="float:right;cursor: pointer;width: 100px;height: 32px"/>
                 </div>
-                {:token('__token__', 'sha1')}
+                {:token_field('__token__', 'sha1')}
                 <input class="btn btn-success btn-block" id="login_btn" value="登录"/>
             </form>
         </div>
@@ -75,7 +75,9 @@
                 $('#login_btn').val('登录').removeClass('btn-danger').addClass('btn-success');
                 if(data.code!=1){
                     $('#err_msg').show().html("<span style='color:red'>"+data.msg+"</span>");
-                    window.location.reload();
+                    setTimeout(function (){
+                        window.location.reload();
+                    }, data.wait*1000);
                     return false;
                 }else{
                     window.location.href=data.data;

@@ -3,15 +3,17 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 use app\admin\model\AdminConfig as ConfigModel;
+use think\facade\View;
+
 /**
  * 配置管理控制器
  * @package app\admin\controller
@@ -21,12 +23,15 @@ class Config extends Admin
 {
     public function index($group = 'base')
     {
-        $tab_data = [];
-        foreach (config('sys.config_group') as $key => $value) {
-            $arr = [];
-            $arr['title'] = $value;
-            $arr['url'] = '?group='.$key;
-            $tab_data['menu'][] = $arr;
+        $tab_data = ['menu'=>[]];
+        $config_group = config('sys.config_group');
+        if(!empty($config_group)){
+            foreach ($config_group as $key => $value) {
+                $arr = [];
+                $arr['title'] = $value;
+                $arr['url'] = '?group='.$key;
+                $tab_data['menu'][] = $arr;
+            }
         }
         $tab_data['current'] = url('?group='.$group);
 
@@ -34,11 +39,11 @@ class Config extends Admin
         $map['group'] = $group;
         $data_list = ConfigModel::where($map)->order('sort,id')->paginate();
         $pages = $data_list->render();
-        $this->assign('data_list', $data_list);
-        $this->assign('pages', $pages);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 1);
-        return $this->fetch();
+        View::assign('data_list', $data_list);
+        View::assign('pages', $pages);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 1);
+        return View::fetch();
     }
 
     /**
@@ -74,7 +79,7 @@ class Config extends Admin
             ConfigModel::getConfig('', true);
             return $this->success('添加成功。');
         }
-        return $this->fetch('form');
+        return View::fetch('form');
     }
 
     /**
@@ -104,8 +109,8 @@ class Config extends Admin
         }
         $row['tips'] = htmlspecialchars_decode($row['tips']);
         $row['value'] = htmlspecialchars_decode($row['value']);
-        $this->assign('data_info', $row);
-        return $this->fetch('form');
+        View::assign('data_info', $row);
+        return View::fetch('form');
     }
 
     /**

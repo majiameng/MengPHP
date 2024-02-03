@@ -3,28 +3,24 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\model;
 
-use think\Model;
+use app\common\model\Common;
+use const app\common\model\DS;
+
 /**
  * 后台角色模型
  * @package app\admin\model
  */
-class AdminModule extends Model
+class AdminModule extends Common
 {
-    // 定义时间戳字段名
-    protected $createTime = 'ctime';
-    protected $updateTime = 'mtime';
-
-    // 自动写入时间戳
-    protected $autoWriteTimestamp = true;
 
     /**
      * 获取模块配置信息
@@ -120,23 +116,23 @@ class AdminModule extends Model
             $data = $this->request->post();
         }
         $data['icon'] = ROOT_DIR.'static/app_icon/'.$data['name'].'.png';
-        $mod_path = APP_PATH.$data['name'] . DS;
-        if (is_dir($mod_path) || self::where('name', $data['name'])->find() || in_array($data['name'], config('hs_system.modules')) !== false) {
+        $mod_path = app_path().$data['name'] . DS;
+        if (is_dir($mod_path) || self::where('name', $data['name'])->find() || in_array($data['name'], config('meng_system.modules')) !== false) {
             $this->error = '模块已存在！';
             return false;
         }
 
-        if (!is_writable(ROOT_PATH.'app')) {
+        if (!is_writable(root_path().'app')) {
             $this->error = 'app]目录不可写！';
             return false;
         }
 
-        if (!is_writable(ROOT_PATH.'theme')) {
+        if (!is_writable(root_path().'theme')) {
             $this->error = '[theme]目录不可写！';
             return false;
         }
 
-        if (!is_writable(ROOT_PATH.'static')) {
+        if (!is_writable(root_path().'static')) {
             $this->error = '[static]目录不可写！';
             return false;
         }
@@ -157,16 +153,16 @@ class AdminModule extends Model
 
         // 生成对应的前台主题模板目录、静态资源目录、后台静态资源目录
         $dir_list = [
-            'theme'.DS.$data['name'].DS.'default'.DS.'static'.DS.'css',
-            'theme'.DS.$data['name'].DS.'default'.DS.'static'.DS.'js',
-            'theme'.DS.$data['name'].DS.'default'.DS.'static'.DS.'image',
-            'theme'.DS.$data['name'].DS.'default'.DS.'index',
-            'static'.DS.$data['name'].DS.'css',
-            'static'.DS.$data['name'].DS.'js',
-            'static'.DS.$data['name'].DS.'image',
+            'theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'static'.DIRECTORY_SEPARATOR.'css',
+            'theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'static'.DIRECTORY_SEPARATOR.'js',
+            'theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'static'.DIRECTORY_SEPARATOR.'image',
+            'theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'index',
+            'static'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'css',
+            'static'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'js',
+            'static'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'image',
         ];
         self::mkDir($dir_list);
-        self::mkThemeConfig('theme'.DS.$data['name'].DS.'default'.DS, $data);
+        self::mkThemeConfig('theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR, $data);
         self::mkSql($mod_path, $data);
         self::mkMenu($mod_path, $data);
         self::mkInfo($mod_path, $data);
@@ -185,14 +181,14 @@ class AdminModule extends Model
         $sql['config'] = '';
         $sql['status'] = 0;
         self::create($sql);
-        if (!is_dir(ROOT_PATH.'static'.DS.'app_icon'.DS)) {
-            mkdir(ROOT_PATH.'static'.DS.'app_icon'.DS, 0755, true);
+        if (!is_dir(root_path().'static'.DIRECTORY_SEPARATOR.'app_icon'.DIRECTORY_SEPARATOR)) {
+            mkdir(root_path().'static'.DIRECTORY_SEPARATOR.'app_icon'.DIRECTORY_SEPARATOR, 0755, true);
         }
         // 复制默认应用图标
-        copy(ROOT_PATH.'static'.DS.'admin'.DS.'image'.DS.'app.png', APP_PATH.$data['name'].DS.$data['name'].'.png');
-        copy(ROOT_PATH.'static'.DS.'admin'.DS.'image'.DS.'app.png', ROOT_PATH.'static'.DS.'app_icon'.DS.$data['name'].'.png');
+        copy(root_path().'static'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'image'.DIRECTORY_SEPARATOR.'app.png', app_path().$data['name'].DIRECTORY_SEPARATOR.$data['name'].'.png');
+        copy(root_path().'static'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'image'.DIRECTORY_SEPARATOR.'app.png', root_path().'static'.DIRECTORY_SEPARATOR.'app_icon'.DIRECTORY_SEPARATOR.$data['name'].'.png');
         // 复制admin布局模板到当前模块
-        copy(APP_PATH.'admin'.DS.'view'.DS.'block'.DS.'layout.php', $mod_path.'view'.DS.'layout.php');
+        copy(app_path().'admin'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'block'.DIRECTORY_SEPARATOR.'layout.php', $mod_path.'view'.DIRECTORY_SEPARATOR.'layout.php');
         return true;
     }
 
@@ -204,9 +200,9 @@ class AdminModule extends Model
     public static function mkDir($list)
     {
         foreach ($list as $dir) {
-            if (!is_dir(ROOT_PATH . $dir)) {
+            if (!is_dir(root_path() . $dir)) {
                 // 创建目录
-                mkdir(ROOT_PATH . $dir, 0755, true);
+                mkdir(root_path() . $dir, 0755, true);
             }
         }
     }
@@ -218,22 +214,22 @@ class AdminModule extends Model
     public static function mkControl($path = '', $data = [])
     {
         // 删除默认控制器目录和文件
-        unlink($path.'controller'.DS.'Index.php');
+        unlink($path.'controller'.DIRECTORY_SEPARATOR.'Index.php');
         rmdir($path.'controller');
         // 生成后台默认控制器
         if (is_dir($path.'admin')) {
             $admin_contro = "<?php\nnamespace app\\".$data["name"]."\\admin;\nuse app\admin\controller\Admin;\n\nclass Index extends Admin\n{\n    public function index()\n    {\n        return ".'$this->afetch()'.";\n    }\n}";
             // 删除框架生成的html文件
-            @unlink($path . 'view'.DS.'index'.DS.'index.html');
-            file_put_contents($path . 'admin'.DS.'Index.php', $admin_contro);
-            file_put_contents($path . 'view'.DS.'index'.DS.'index.php', 'Hellow '.$data["name"]);
+            @unlink($path . 'view'.DIRECTORY_SEPARATOR.'index'.DIRECTORY_SEPARATOR.'index.html');
+            file_put_contents($path . 'admin'.DIRECTORY_SEPARATOR.'Index.php', $admin_contro);
+            file_put_contents($path . 'view'.DIRECTORY_SEPARATOR.'index'.DIRECTORY_SEPARATOR.'index.php', 'Hellow '.$data["name"]);
         }
 
         // 生成前台默认控制器
         if (is_dir($path.'home')) {
-            $home_contro = "<?php\nnamespace app\\".$data["name"]."\\home;\nuse app\common\controller\Common;\n\nclass Index extends Common\n{\n    public function index()\n    {\n        return ".'$this->fetch()'.";\n    }\n}";
-            file_put_contents($path . 'home'.DS.'Index.php', $home_contro);
-            file_put_contents(ROOT_PATH.'theme'.DS.$data['name'].DS.'default'.DS.'index'.DS.'index.php', '<?php defined("IN_SYSTEM") or die("Access Denied");//防止模板被盗?>');
+            $home_contro = "<?php\nnamespace app\\".$data["name"]."\\home;\nuse app\common\controller\Common;\n\nclass Index extends Common\n{\n    public function index()\n    {\n        return ".'View::fetch()'.";\n    }\n}";
+            file_put_contents($path . 'home'.DIRECTORY_SEPARATOR.'Index.php', $home_contro);
+            file_put_contents(root_path().'theme'.DIRECTORY_SEPARATOR.$data['name'].DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'index'.DIRECTORY_SEPARATOR.'index.php', '<?php defined("IN_SYSTEM") or die("Access Denied");//防止模板被盗?>');
         }
     }
 
@@ -243,8 +239,8 @@ class AdminModule extends Model
      */
     public static function mkSql($path = '', $data = [])
     {
-        file_put_contents($path . 'sql'.DS.'install.sql', "/*\n sql安装文件\n*/");
-        file_put_contents($path . 'sql'.DS.'uninstall.sql', "/*\n sql卸载文件\n*/");
+        file_put_contents($path . 'sql'.DIRECTORY_SEPARATOR.'install.sql', "/*\n sql安装文件\n*/");
+        file_put_contents($path . 'sql'.DIRECTORY_SEPARATOR.'uninstall.sql', "/*\n sql卸载文件\n*/");
     }
 
     /**
@@ -259,11 +255,11 @@ class AdminModule extends Model
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 /**
@@ -301,11 +297,11 @@ INFO;
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 /**
@@ -361,8 +357,8 @@ INFO;
     <item id="title"><![CDATA[默认模板]]></item>
     <item id="version"><![CDATA[v1.0.0]]></item>
     <item id="time"><![CDATA['.date('Y-m-d H:i').']]></item>
-    <item id="author"><![CDATA[HisiPHP]]></item>
-    <item id="copyright"><![CDATA[HisiPHP]]></item>
+    <item id="author"><![CDATA[MengPHP]]></item>
+    <item id="copyright"><![CDATA[MengPHP]]></item>
     <item id="identifier" title="默认模板必须留空，非默认模板必须填写对应的应用标识"><![CDATA[]]></item>
     <item id="depend" title="请填写当前对应的模块标识"><![CDATA['.$data['identifier'].']]></item>
 </root>';

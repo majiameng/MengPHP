@@ -3,29 +3,24 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\model;
 
-use think\Model;
 use app\admin\model\AdminUser as UserModel;
+use app\common\model\Common;
+
 /**
  * 后台角色模型
  * @package app\admin\model
  */
-class AdminRole extends Model
+class AdminRole extends Common
 {
-    // 定义时间戳字段名
-    protected $createTime = 'ctime';
-    protected $updateTime = 'mtime';
-
-    // 自动写入时间戳
-    protected $autoWriteTimestamp = true;
 
     // 写入时，将权限ID转成JSON格式
     public function setAuthAttr($value)

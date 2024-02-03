@@ -3,15 +3,15 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
-use app\common\util\Dir;
+use think\facade\View;
 
 /**
  * 后台默认首页控制器
@@ -19,6 +19,7 @@ use app\common\util\Dir;
  */
 class Index extends Admin
 {
+    public $layout_off_action = ['index'];
     /**
      * 首页
      * @author 马佳萌 <666@majiameng.com>
@@ -26,7 +27,7 @@ class Index extends Admin
      */
     public function index()
     {
-        return $this->fetch('index/index');
+        return View::fetch('index/index');
     }
 
 
@@ -38,7 +39,7 @@ class Index extends Admin
      */
     public function index_page()
     {
-        return $this->fetch('index/index_page');
+        return View::fetch('index/index_page');
     }
 
 

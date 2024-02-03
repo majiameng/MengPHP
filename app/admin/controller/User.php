@@ -3,19 +3,20 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 
-use app\admin\model\AdminUser as UserModel;
-use app\admin\model\AdminRole as RoleModel;
 use app\admin\model\AdminMenu as MenuModel;
-use think\Validate;
+use app\admin\model\AdminRole as RoleModel;
+use app\admin\model\AdminUser as UserModel;
+use think\facade\View;
+
 
 /**
  * 后台用户、角色控制器
@@ -27,9 +28,9 @@ class User extends Admin
     /**
      * 初始化方法
      */
-    protected function _initialize()
+    protected function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
 
         $tab_data['menu'] = [
             [
@@ -60,12 +61,17 @@ class User extends Admin
         $pages = $data_list->render();
         $tab_data = $this->tab_data;
         $tab_data['current'] = url('');
-        $this->assign('role_list', RoleModel::getAll());
-        $this->assign('data_list', $data_list);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 1);
-        $this->assign('pages', $pages);
-        return $this->fetch();
+
+        $role_list = RoleModel::getAll();
+        foreach ($role_list as $value){
+            $role_list[$value['id']] = $value['name'];
+        }
+        View::assign('role_list', $role_list);
+        View::assign('data_list', $data_list);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 1);
+        View::assign('pages', $pages);
+        return View::fetch();
     }
 
     /**
@@ -79,7 +85,7 @@ class User extends Admin
         if ($val != 0 && $val != 1) {
             return $this->error('参数传递错误');
         }
-        if (UserModel::where('id', ADMIN_ID)->setField('iframe', $val) === false) {
+        if (UserModel::where('id', ADMIN_ID)->update(['iframe'=> $val]) === false) {
             return $this->error('切换失败');
         }
         if ($val == 1) {
@@ -117,11 +123,11 @@ class User extends Admin
         $tab_data['menu'] = [
             ['title' => '添加用户'],
         ];
-        $this->assign('menu_list', '');
-        $this->assign('role_option', RoleModel::getOption());
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch('userform');
+        View::assign('menu_list', '');
+        View::assign('role_option', RoleModel::getOption());
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch('userform');
     }
 
     /**
@@ -184,13 +190,13 @@ class User extends Admin
             ['title' => '设置权限'],
         ];
 
-        $this->assign('menu_list', MenuModel::getAllChild());
-        $this->assign('role_option', RoleModel::getOption());
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 2);
-        $this->assign('role_option', RoleModel::getOption($row['role_id']));
-        $this->assign('data_info', $row);
-        return $this->fetch('userform');
+        View::assign('menu_list', MenuModel::getAllChild());
+        View::assign('role_option', RoleModel::getOption());
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 2);
+        View::assign('role_option', RoleModel::getOption($row['role_id']));
+        View::assign('data_info', $row);
+        return View::fetch('userform');
     }
 
     /**
@@ -222,8 +228,8 @@ class User extends Admin
         }
 
         $row = UserModel::where('id', ADMIN_ID)->field('username,nick,email,mobile')->find()->toArray();
-        $this->assign('data_info', $row);
-        return $this->fetch();
+        View::assign('data_info', $row);
+        return View::fetch();
     }
 
     /**
@@ -258,11 +264,11 @@ class User extends Admin
         $data_list = RoleModel::field('id,name,intro,ctime,status')->paginate();
         // 分页
         $pages = $data_list->render();
-        $this->assign('data_list', $data_list);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 1);
-        $this->assign('pages', $pages);
-        return $this->fetch();
+        View::assign('data_list', $data_list);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 1);
+        View::assign('pages', $pages);
+        return View::fetch();
     }
 
     /**
@@ -290,10 +296,10 @@ class User extends Admin
             ['title' => '添加角色'],
             ['title' => '设置权限'],
         ];
-        $this->assign('menu_list', MenuModel::getAllChild());
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch('roleform');
+        View::assign('menu_list', MenuModel::getAllChild());
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch('roleform');
     }
 
     /**
@@ -335,11 +341,11 @@ class User extends Admin
         ];
         $row = RoleModel::where('id', $id)->field('id,name,intro,auth,status')->find()->toArray();
         $row['auth'] = json_decode($row['auth']);
-        $this->assign('data_info', $row);
-        $this->assign('menu_list', MenuModel::getAllChild());
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 2);
-        return $this->fetch('roleform');
+        View::assign('data_info', $row);
+        View::assign('menu_list', MenuModel::getAllChild());
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 2);
+        return View::fetch('roleform');
     }
     /**
      * 删除角色

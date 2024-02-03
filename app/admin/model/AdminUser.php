@@ -3,31 +3,25 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\model;
 
-use think\Model;
 use app\admin\model\AdminMenu as MenuModel;
 use app\admin\model\AdminRole as RoleModel;
+use app\common\model\Common;
 
 /**
  * 后台用户模型
  * @package app\admin\model
  */
-class AdminUser extends Model
+class AdminUser extends Common
 {
-    // 定义时间戳字段名
-    protected $createTime = 'ctime';
-    protected $updateTime = 'mtime';
-
-    // 自动写入时间戳
-    protected $autoWriteTimestamp = true;
 
     // 对密码进行加密
     public function setPasswordAttr($value)
@@ -248,7 +242,7 @@ class AdminUser extends Model
     //             $map = [];
     //             $map['id'] = $v;
     //             // 删除用户
-    //             self::where($map)->setField('status', $val);
+    //             self::where($map)->update(['status'=> $val]);
     //         }
 
     //         if ($error) {
@@ -270,7 +264,7 @@ class AdminUser extends Model
     //         $map = [];
     //         $map['id'] = $id;
     //         // 删除用户
-    //         self::where($map)->setField('status', $val);
+    //         self::where($map)->update(['status'=> $val]);
     //     }
 
     //     return true;

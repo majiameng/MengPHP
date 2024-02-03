@@ -3,28 +3,23 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\model;
 
-use think\Model;
+use app\common\model\Common;
+
 /**
  * 系统配置模型
  * @package app\admin\model
  */
-class AdminConfig extends Model
+class AdminConfig extends Common
 {
-    // 定义时间戳字段名
-    protected $createTime = 'ctime';
-    protected $updateTime = 'mtime';
-
-    // 自动写入时间戳
-    protected $autoWriteTimestamp = true;
 
     /**
      * 获取系统配置信息
@@ -46,9 +41,9 @@ class AdminConfig extends Model
                         if ($config['name'] == 'config_group') {
                             $v = parse_attr($config['value']);
                             if (!empty($config['value'])) {
-                                $result[$config['group']][$config['name']] = array_merge(config('hs_system.config_group'), $v);
+                                $result[$config['group']][$config['name']] = array_merge(config('meng_system.config_group'), $v);
                             } else {
-                                $result[$config['group']][$config['name']] = config('hs_system.config_group');
+                                $result[$config['group']][$config['name']] = config('meng_system.config_group');
                             }
                         } else {
                             $result[$config['group']][$config['name']] = parse_attr($config['value']);

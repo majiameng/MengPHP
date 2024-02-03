@@ -3,11 +3,11 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 
@@ -32,7 +32,7 @@ class Cloud {
     public $type = 'post';
 
     //服务器地址
-    const api_url = 'http://cloud.hisiphp.com/thinkphp5/';
+    const api_url = 'http://cloud.mengphp.com/ThinkPHP8/';
     
     /**
      * 架构函数
@@ -42,7 +42,7 @@ class Cloud {
     public function __construct($identifier = '', $path = './') {
         $this->identifier = $identifier;
         $this->path = $path;
-        $this->lock = ROOT_PATH.'upload/cloud.lock';
+        $this->lock = root_path().'upload/cloud.lock';
     }
 
     /**

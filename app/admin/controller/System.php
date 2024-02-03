@@ -3,17 +3,18 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 use app\admin\model\AdminConfig as ConfigModel;
 use app\admin\model\AdminModule as ModuleModel;
-use app\admin\model\AdminPlugins as PluginsModel;
+use think\facade\View;
+
 /**
  * 系统设置控制器
  * @package app\admin\controller
@@ -29,7 +30,6 @@ class System extends Admin
      */
     public function index($group = 'base')
     {
-
         if ($this->request->isPost()) {
             $data = $this->request->post();
             $types = $data['type'];
@@ -56,7 +56,7 @@ class System extends Admin
                     }
                 }
 
-                if (ModuleModel::where('id', $row['id'])->setField('config', json_encode($row['config'], 1)) === false) {
+                if (ModuleModel::where('id', $row['id'])->update(['config'=> json_encode($row['config'], 1)]) === false) {
                     return $this->error('保存失败！');
                 }
                 ModuleModel::getConfig('', true);
@@ -75,9 +75,9 @@ class System extends Admin
                 }
                 // 修改后台管理目录
                 if ($k == 'admin_path' && $ids[$k] != config('sys.admin_path')) {
-                    if (is_file(ROOT_PATH.config('sys.admin_path')) && is_writable(ROOT_PATH.config('sys.admin_path'))) {
-                        @rename(ROOT_PATH.config('sys.admin_path'), ROOT_PATH.$ids[$k]);
-                        if (!is_file(ROOT_PATH.$ids[$k])) {
+                    if (is_file(root_path().config('sys.admin_path')) && is_writable(root_path().config('sys.admin_path'))) {
+                        @rename(root_path().config('sys.admin_path'), root_path().$ids[$k]);
+                        if (!is_file(root_path().$ids[$k])) {
                             $ids[$k] = config('sys.admin_path');
                         }
                         $admin_path = $ids[$k];
@@ -91,12 +91,15 @@ class System extends Admin
             return $this->success('保存成功。', ROOT_DIR.$admin_path.'/admin/system/index/group/'.$group.'.html');
         }
 
-        $tab_data = [];
-        foreach (config('sys.config_group') as $key => $value) {
-            $arr = [];
-            $arr['title'] = $value;
-            $arr['url'] = '?group='.$key;
-            $tab_data['menu'][] = $arr;
+        $tab_data = ['menu'=>[]];
+        $config_group = config('sys.config_group');
+        if(!empty($config_group)){
+            foreach ($config_group as $key => $value) {
+                $arr = [];
+                $arr['title'] = $value;
+                $arr['url'] = '?group='.$key;
+                $tab_data['menu'][] = $arr;
+            }
         }
         $map = [];
         $map['group'] = $group;
@@ -133,11 +136,11 @@ class System extends Admin
         $tab_data['current'] = url('?group='.$group);
         $_GET['group'] = $group;
 
-        $this->assign('data_list', $data_list);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 1);
+        View::assign('data_list', $data_list);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 1);
 
-        return $this->fetch();
+        return View::fetch();
     }
 
     private function mkAdmin($file)
@@ -149,13 +152,13 @@ class System extends Admin
 if(version_compare(PHP_VERSION,'5.6.0','<'))  die('PHP版本过低，最少需要PHP5.5，请升级PHP版本！');
 
 // 定义应用目录
-define('APP_PATH', __DIR__ . '/app/');
+define('app_path()', __DIR__ . '/app/');
 
 // 定义入口为admin
 define('ENTRANCE', 'admin');
 
 // 检查是否安装
-if(!is_file(APP_PATH.'install/install.lock')) {
+if(!is_file(app_path().'install/install.lock')) {
     header('Location: /');
     exit;
 }
@@ -163,7 +166,7 @@ if(!is_file(APP_PATH.'install/install.lock')) {
 // 加载框架引导文件
 require __DIR__ . '/thinkphp/start.php';
 INFO;
-        if (!file_put_contents(ROOT_PATH.$file, $code)) {
+        if (!file_put_contents(root_path().$file, $code)) {
             return fasle;
         }
         return true;

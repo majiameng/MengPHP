@@ -3,7 +3,7 @@
         <label class="layui-form-label">会员等级</label>
         <div class="layui-input-inline">
             <select name="level_id" class="field-level_id" type="select">
-                {$level_option}
+                {$level_option|raw}
             </select>
         </div>
     </div>

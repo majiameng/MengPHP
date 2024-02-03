@@ -11,9 +11,9 @@
  * +------------------------------------------------------
  */
 return [
-    'MengPHP' => [
+    'mengphp' => [
         'name' => 'MengPHP',
-        'version' => '1.0.0',
+        'version' => '2.0.0',
         'release' => 0,
         'copyright' => 'MengPHP',
         'url' => 'http://www.majiameng.com',

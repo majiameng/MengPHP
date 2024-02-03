@@ -3,11 +3,11 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\validate;
@@ -50,6 +50,6 @@ class AdminUser extends Validate
         //更新个人信息
         'info'  =>  ['username', 'email', 'password' => 'length:6,20', 'mobile'],
         //登录
-        'login'  =>  ['username' => 'require|token', 'password'],
+        'login'  =>  ['username' => 'require|alphaNum|token', 'password'],
     ];
 }

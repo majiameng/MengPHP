@@ -36,7 +36,7 @@
         </thead>
         <tbody>
             {php}
-                $level = config('hs_system.member_level');
+                $level = config('meng_system.member_level');
             {/php}
             {volist name="data_list" id="vo"}
             <tr>

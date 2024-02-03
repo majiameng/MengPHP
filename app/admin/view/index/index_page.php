@@ -35,7 +35,7 @@
                         </tr>
                         <tr>
                             <td>PHP/MySql版本</td>
-                            <td>PHP {$Think.const.PHP_VERSION} / MySql {:db()->query('select version() as version')[0]['version']}</td>
+                            <td>PHP {$Think.const.PHP_VERSION} / MySql {:\\think\\facade\\Db::query('select version() as version')[0]['version']}</td>
                         </tr>
                         <tr>
                             <td>ThinkPHP版本</td>

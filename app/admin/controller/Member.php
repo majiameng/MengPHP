@@ -3,17 +3,19 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 
-use app\common\model\AdminMember as MemberModel;
-use app\common\model\AdminMemberLevel as LevelModel;
+use app\admin\model\AdminMember as MemberModel;
+use app\admin\model\AdminMemberLevel as LevelModel;
+use think\facade\View;
+
 /**
  * 会员管理控制器
  * @package app\admin\controller
@@ -42,9 +44,9 @@ class Member extends Admin
         $data_list = MemberModel::where($map)->paginate();
         // 分页
         $pages = $data_list->render();
-        $this->assign('data_list', $data_list);
-        $this->assign('pages', $pages);
-        return $this->fetch();
+        View::assign('data_list', $data_list);
+        View::assign('pages', $pages);
+        return View::fetch();
     }
 
     /**
@@ -68,8 +70,8 @@ class Member extends Admin
             return $this->success('添加成功。');
         }
 
-        $this->assign('level_option', LevelModel::getOption());
-        return $this->fetch('form');
+        View::assign('level_option', LevelModel::getOption());
+        return View::fetch('form');
     }
 
     /**
@@ -96,9 +98,9 @@ class Member extends Admin
         }
 
         $row = MemberModel::where('id', $id)->field('id,username,level_id,nick,email,mobile,expire_time')->find()->toArray();
-        $this->assign('data_info', $row);
-        $this->assign('level_option', LevelModel::getOption($row['level_id']));
-        return $this->fetch('form');
+        View::assign('data_info', $row);
+        View::assign('level_option', LevelModel::getOption($row['level_id']));
+        return View::fetch('form');
     }
 
     /**
@@ -128,11 +130,11 @@ class Member extends Admin
         $data_list = MemberModel::where($map)->paginate(10, true);
         // 分页
         $pages = $data_list->render();
-        $this->assign('data_list', $data_list);
-        $this->assign('pages', $pages);
-        $this->assign('callback', $callback);
-        $this->view->engine->layout(false);
-        return $this->fetch();
+        View::assign('data_list', $data_list);
+        View::assign('pages', $pages);
+        View::assign('callback', $callback);
+        View::engine()->layout(false);
+        return View::fetch();
     }
 
     // +----------------------------------------------------------------------
@@ -149,9 +151,9 @@ class Member extends Admin
         $data_list = LevelModel::field('id,name,intro,discount,min_exper,max_exper,ctime,default,status')->paginate();
         // 分页
         $pages = $data_list->render();
-        $this->assign('data_list', $data_list);
-        $this->assign('pages', $pages);
-        return $this->fetch();
+        View::assign('data_list', $data_list);
+        View::assign('pages', $pages);
+        return View::fetch();
     }
 
     /**
@@ -177,7 +179,7 @@ class Member extends Admin
             return $this->success('添加成功。');
         }
 
-        return $this->fetch('levelform');
+        return View::fetch('levelform');
     }
 
     /**
@@ -203,8 +205,8 @@ class Member extends Admin
         }
         $row = LevelModel::where('id', $id)->find()->toArray();
 
-        $this->assign('data_info', $row);
-        return $this->fetch('levelform');
+        View::assign('data_info', $row);
+        return View::fetch('levelform');
     }
 
     /**
@@ -229,8 +231,8 @@ class Member extends Admin
      */
     public function setDefault($id = 0)
     {
-        LevelModel::update(['default' => 0], ['id' => ['neq', $id]]);
-        if (LevelModel::where('id', $id)->setField('default', 1) === false) {
+        LevelModel::update(['default' => 0], [['id','<>', $id]]);
+        if (LevelModel::where('id', $id)->update(['default'=> 1]) === false) {
             return $this->error('设置失败！');
         }
 

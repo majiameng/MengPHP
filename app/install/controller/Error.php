@@ -3,17 +3,18 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\install\controller;
-use app\common\controller\Common;
 use app\admin\model\AdminUser as UserModel;
+use app\common\controller\Common;
 use think\Db;
+use think\facade\View;
 
 class Error extends Common
 {
@@ -45,7 +46,7 @@ class Error extends Common
 
             default:
                 session('install_error', false);
-                return $this->fetch('index');
+                return View::fetch('index');
                 break;
         }
     }
@@ -60,8 +61,8 @@ class Error extends Common
         $data['env'] = self::checkNnv();
         $data['dir'] = self::checkDir();
         $data['func'] = self::checkFunc();
-        $this->assign('data', $data);
-        return $this->fetch('step2');
+        View::assign('data', $data);
+        return View::fetch('step2');
     }
 
     /**
@@ -70,7 +71,7 @@ class Error extends Common
      */
     private function step3()
     {
-        return $this->fetch('step3');
+        return View::fetch('step3');
     }
 
     /**
@@ -80,7 +81,7 @@ class Error extends Common
     private function step4()
     {
         if ($this->request->isPost()) {
-            if (!is_writable(APP_PATH.'database.php')) {
+            if (!is_writable(app_path()().'database.php')) {
                 return $this->error('[app/database.php]无读写权限！');
             }
             $data = input('post.');
@@ -99,7 +100,7 @@ class Error extends Common
             }
             $cover = $data['cover'];
             unset($data['cover']);
-            $config = include APP_PATH.'database.php';
+            $config = include app_path().'database.php';
             foreach ($data as $k => $v) {
                 if (array_key_exists($k, $config) === false) {
                     return $this->error('参数'.$k.'不存在！');
@@ -146,7 +147,7 @@ class Error extends Common
         $account = input('post.account');
         $password = input('post.password');
 
-        $config = include APP_PATH.'database.php';
+        $config = include app_path().'database.php';
         if (empty($config['hostname']) || empty($config['database']) || empty($config['username'])) {
             return $this->error('请先点击测试数据库连接！');
         }
@@ -163,7 +164,7 @@ class Error extends Common
         }
         // 导入系统初始数据库结构
         // 导入SQL
-        $sql_file = APP_PATH.'install/sql/install.sql';
+        $sql_file = app_path().'install/sql/install.sql';
         if (file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
             $sql_list = parse_sql($sql, 0, ['mengphp_' => $config['prefix']]);
@@ -194,7 +195,7 @@ class Error extends Common
         if (!$res) {
             return $this->error($user->getError() ? $user->getError() : '管理员账号设置失败！');
         }
-        file_put_contents(APP_PATH.'install/install.lock', date('Y-m-d H:i:s'));
+        file_put_contents(app_path().'install/install.lock', date('Y-m-d H:i:s'));
         //站点密匙
         $auth = password_hash(request()->time(), PASSWORD_DEFAULT);
         $hs_auth = <<<INFO
@@ -203,16 +204,16 @@ class Error extends Common
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
  return ['key' => '{$auth}'];
 INFO;
-        file_put_contents(APP_PATH.'extra/hs_auth.php', $hs_auth);
+        file_put_contents(app_path().'extra/hs_auth.php', $hs_auth);
         // 获取站点根目录
         $root_dir = request()->baseFile();
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);
@@ -378,9 +379,9 @@ return [
     'query'           => '\\think\\db\\Query',
 ];
 INFO;
-        file_put_contents(APP_PATH.'database.php', $code);
+        file_put_contents(app_path().'database.php', $code);
         // 判断写入是否成功
-        $config = include APP_PATH.'database.php';
+        $config = include app_path().'database.php';
         if (empty($config['database']) || $config['database'] != $data['database']) {
             return $this->error('[app/database.php]数据库配置写入失败！');
             exit;

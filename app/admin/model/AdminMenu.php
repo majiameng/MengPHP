@@ -3,31 +3,26 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\model;
-use think\Model;
-use think\Loader;
 use app\admin\model\AdminRole as RoleModel;
+use app\common\model\Common;
 use think\Db;
+use think\Loader;
+
 /**
  * 后台菜单模型
  * @package app\admin\model
  */
-class AdminMenu extends Model
+class AdminMenu extends Common
 {
-    // 定义时间戳字段名
-    protected $createTime = 'ctime';
-    protected $updateTime = false;
 
-    // 自动写入时间戳
-    protected $autoWriteTimestamp = true;
-    
     public function lang()
     {
         return $this->belongsTo('AdminMenuLang', 'id', 'menu_id')->field('title');
@@ -254,7 +249,7 @@ class AdminMenu extends Model
 
         $map = [];
         if (empty($id)) {
-            $map['module']      = request()->module();
+            $map['module']      = app('http')->getName();
             $map['controller'] = request()->controller();
             $map['action']     = request()->action();
         } else {
@@ -428,7 +423,7 @@ class AdminMenu extends Model
                     $childs = $v['childs'];
                     unset($v['childs']);
                 }
-                $res = model('AdminMenu')->storage($v);
+                $res = (new AdminMenu)->storage($v);
                 if (!$res) {
                     return false;
                 }
@@ -456,7 +451,7 @@ class AdminMenu extends Model
                     $childs = $v['childs'];
                     unset($v['childs']);
                 }
-                $res = model('AdminMenu')->storage($v);
+                $res = (new AdminMenu)->storage($v);
                 if (!$res) {
                     return false;
                 }

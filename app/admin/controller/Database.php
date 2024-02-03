@@ -3,18 +3,20 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 namespace app\admin\controller;
 
 use app\common\util\Dir;
 use app\common\util\Database as dbOper;
-use think\Db;
+use think\facade\Db;
+use think\facade\View;
+
 /**
  * 数据库管理控制器
  * @package app\admin\controller
@@ -24,9 +26,9 @@ class Database extends Admin
     /**
      * 初始化方法
      */
-    protected function _initialize()
+    protected function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
 
         $tab_data['menu'] = [
             [
@@ -55,7 +57,7 @@ class Database extends Admin
             $data_list = Db::query("SHOW TABLE STATUS");
         } else {
             //列出备份文件列表
-            $path = trim(config('databases.backup_path'), '/').DS;
+            $path = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR;
             if (!is_dir($path)) {
                 Dir::create($path);
             }
@@ -88,10 +90,10 @@ class Database extends Admin
             }
 
         }
-        $this->assign('data_list', $data_list);
-        $this->assign('tab_data', $tab_data);
-        $this->assign('tab_type', 1);
-        return $this->fetch($group);
+        View::assign('data_list', $data_list);
+        View::assign('tab_data', $tab_data);
+        View::assign('tab_type', 1);
+        return View::fetch($group);
     }
 
     /**
@@ -117,7 +119,7 @@ class Database extends Admin
 
             //读取备份配置
             $config = array(
-                'path'     => trim(config('databases.backup_path'), '/').DS,
+                'path'     => trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR,
                 'part'     => config('databases.part_size'),
                 'compress' => config('databases.compress'),
                 'level'    => config('databases.compress_level'),
@@ -176,7 +178,7 @@ class Database extends Admin
         }
 
         $name  = date('Ymd-His', $id) . '-*.sql*';
-        $path  = trim(config('databases.backup_path'), '/').DS.$name;
+        $path  = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
         $files = glob($path);
         $list  = array();
         foreach($files as $name){
@@ -192,7 +194,7 @@ class Database extends Admin
         if(count($list) === $last[0]){
             foreach ($list as $item) {
                 $config = [
-                    'path'     => trim(config('databases.backup_path'), '/').DS,
+                    'path'     => trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR,
                     'compress' => $item[2]
                 ];
                 $database = new dbOper($item, $config);
@@ -272,7 +274,7 @@ class Database extends Admin
         }
 
         $name  = date('Ymd-His', $id) . '-*.sql*';
-        $path = trim(config('databases.backup_path'), '/').DS.$name;
+        $path = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
         array_map("unlink", glob($path));
         if(count(glob($path)) && glob($path)){
             return $this->error('备份文件删除失败，请检查权限！');

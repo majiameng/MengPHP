@@ -3,15 +3,17 @@
  * +------------------------------------------------------
  * | Copyright (c) 2016-2018 http://www.majiameng.com
  * +------------------------------------------------------
- * | MengPHP后台框架[基于ThinkPHP5开发]
+ * | MengPHP后台框架[基于ThinkPHP8开发]
  * +------------------------------------------------------
  * | Author: 马佳萌 <666@majiameng.com>,QQ:879042886
  * +------------------------------------------------------
- * | DateTime: 2017/1/26 12:14
+ * | DateTime: 2023/10/01 12:14
  * +------------------------------------------------------
  */
 
 // 应用公共函数库
+use app\admin\model\AdminLanguage;
+use app\admin\model\AdminMember;
 use think\exception\HttpException;
 
 if (!function_exists('dblang')) {
@@ -23,9 +25,9 @@ if (!function_exists('dblang')) {
     function dblang($group = '') {
         $lang = cookie($group.'_language');
         if (empty($lang)) {
-            $lang = config('default_lang');
+            $lang = config('lang.default_lang');
         }
-        return model('AdminLanguage')->lists($lang);
+        return (new AdminLanguage())->lists($lang);
     }
 }
 
@@ -286,7 +288,7 @@ if (!function_exists('login')) {
      */
     function login($account = '', $password = '', $remember = false, $field = 'nick', $token = false)
     {
-        return model('AdminMember')->login($account, $password, $remember, $field, $token);
+        return (new AdminMember())->login($account, $password, $remember, $field, $token);
     }
 }
 
@@ -296,7 +298,7 @@ if (!function_exists('is_login')) {
      * @return bool|array
      */
     function is_login() {
-        return model('AdminMember')->isLogin();
+        return (new AdminMember())->isLogin();
     }
 }
 
@@ -306,7 +308,7 @@ if (!function_exists('logout')) {
      * @return bool|array
      */
     function logout() {
-        return model('AdminMember')->logout();
+        return (new AdminMember())->logout();
     }
 }
 
@@ -691,7 +693,7 @@ if (!function_exists('runhook')) {
      * @param array $params 参数
      */
     function runhook($name = '', $params = []) {
-        \think\Hook::listen($name, $params);
+//        \think\Hook::listen($name, $params);
     }
 }
 
@@ -760,7 +762,7 @@ if (!function_exists('plugins_info')) {
      */
     function plugins_info($name = '')
     {
-        $path = ROOT_PATH.'plugins/'.$name.'/info.php';
+        $path = root_path().'plugins/'.$name.'/info.php';
         if (!file_exists($path)) {
             return false;
         }

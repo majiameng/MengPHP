@@ -4,7 +4,7 @@
 .layui-table tbody tr.no{background-color:#f00;color:#fff;}
 </style>
 <div class="header">
-    <h1>感谢您选择{:config('hisiphp.name')}</h1>
+    <h1>感谢您选择{:config('mengphp.name')}</h1>
 </div>
 <div class="install-box">
     <fieldset class="layui-elem-field layui-field-title">
