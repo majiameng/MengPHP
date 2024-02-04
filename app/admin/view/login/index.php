@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>{:config('base.site_name')}后台登录</title>
+    <title>{:config('system.base.site_name')}后台登录</title>
     <link href="__ADMIN_CSS__/bootstrap.min.css" rel="stylesheet">
     <link href="__ADMIN_CSS__/animate.min.css" rel="stylesheet">
     <link href="__ADMIN_CSS__/style.min.css" rel="stylesheet">
@@ -24,14 +24,14 @@
                 <div class="logopanel m-b">
                 </div>
                 <div class="m-b"></div>
-                <h4>欢迎使用 <strong>{:config('base.site_name')}</strong>后台管理系统</h4>
+                <h4>欢迎使用 <strong>{:config('system.base.site_name')}</strong>后台管理系统</h4>
                 <ul class="m-b">
                 </ul>
             </div>
         </div>
         <div class="col-sm-5">
             <form method="post" action="index.html">
-                <p class="m-t-md" id="err_msg">登录到{:config('base.site_name')}</p>
+                <p class="m-t-md" id="err_msg">登录到{:config('system.base.site_name')}</p>
                 <input type="text" class="form-control uname" placeholder="用户名" id="username" />
                 <input type="password" class="form-control pword m-b" placeholder="密码" id="password" />
                 <div style="margin-bottom:70px">
@@ -75,9 +75,9 @@
                 $('#login_btn').val('登录').removeClass('btn-danger').addClass('btn-success');
                 if(data.code!=1){
                     $('#err_msg').show().html("<span style='color:red'>"+data.msg+"</span>");
-                    setTimeout(function (){
-                        window.location.reload();
-                    }, data.wait*1000);
+                    // setTimeout(function (){
+                    //     window.location.reload();
+                    // }, data.wait*1000);
                     return false;
                 }else{
                     window.location.href=data.data;

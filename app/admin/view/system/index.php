@@ -94,7 +94,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">{$v['title']}</label>
                 <div class="layui-input-inline upload">
-                    <button type="button" name="upload" class="layui-btn layui-btn-primary layui-upload" lay-type="image" lay-data="{ {if condition="!empty($v['url'])"}url: '{:url($v['url'])}', {/if}exts:'{:str_replace(',', '|', config('upload.upload_image_ext'))}', accept:'image'}">请上传{$v['title']}</button>
+                    <button type="button" name="upload" class="layui-btn layui-btn-primary layui-upload" lay-type="image" lay-data="{ {if condition="!empty($v['url'])"}url: '{:url($v['url'])}', {/if}exts:'{:str_replace(',', '|', config('system.upload.upload_image_ext'))}', accept:'image'}">请上传{$v['title']}</button>
                     <input type="hidden" class="upload-input" name="id[{$v['id']}]" value="{$v['value']}">
                     {if condition="$v['value']"}
                         <img src="{$v['value']}" style="display:inline-block;border-radius:5px;border:1px solid #ccc" width="36" height="36">
@@ -110,7 +110,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">{$v['title']}</label>
                 <div class="layui-input-inline upload">
-                    <button type="button" name="upload" class="layui-btn layui-btn-primary layui-upload" lay-data="{ {if condition="!empty($v['url'])"}url: '{:url($v['url'])}', {/if}exts:'{:str_replace(',', '|', config('upload.upload_file_ext'))}', accept:'file'}">请上传{$v['title']}</button>
+                    <button type="button" name="upload" class="layui-btn layui-btn-primary layui-upload" lay-data="{ {if condition="!empty($v['url'])"}url: '{:url($v['url'])}', {/if}exts:'{:str_replace(',', '|', config('system.upload.upload_file_ext'))}', accept:'file'}">请上传{$v['title']}</button>
                     <input type="hidden" class="upload-input" name="id[{$v['id']}]" value="{$v['value']}">
                 </div>
                 <div class="layui-form-mid layui-word-aux">{:htmlspecialchars_decode($v['tips'])}<br>调用方式：<code>config('{:input('param.group', 'base')}.{$v['name']}')</code></div>

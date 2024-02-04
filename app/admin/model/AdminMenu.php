@@ -41,7 +41,7 @@ class AdminMenu extends Common
 
         // admin模块 只允许超级管理员在开发模式下修改
         if (isset($data['id']) && !empty($data['id'])) {
-            if (($data['module'] == 'admin' && ADMIN_ID != 1) || (ADMIN_ID == 1 && config('develop.app_debug') == 0)) {
+            if (($data['module'] == 'admin' && ADMIN_ID != 1) || (ADMIN_ID == 1 && config('system.develop.app_debug') == 0)) {
                 $this->error = '禁止修改系统模块！';
                 return false;
             }
@@ -64,7 +64,7 @@ class AdminMenu extends Common
         }
         $title = $data['title'];
         if (isset($data['id']) && !empty($data['id'])) {
-            if (config('sys.multi_language') == 1) {
+            if (config('system.sys.multi_language') == 1) {
                 if (Db::name('admin_menu_lang')->where(['menu_id' => $data['id'], 'lang' => dblang('admin')])->find()) {
                     Db::name('admin_menu_lang')->where(['menu_id' => $data['id'], 'lang' => dblang('admin')])->update(['title' => $title]);
                 } else {
@@ -78,7 +78,7 @@ class AdminMenu extends Common
             $res = $this->update($data);
         } else {
             $res = $this->create($data);
-            if (config('sys.multi_language') == 1) {
+            if (config('system.sys.multi_language') == 1) {
                 $map = [];
                 $map['menu_id'] = $res->id;
                 $map['title'] = $title;
@@ -106,7 +106,7 @@ class AdminMenu extends Common
     {
         $cache_tag = md5('_admin_child_menu'.$pid.$field.$status.dblang('admin'));
         $trees = [];
-        if (config('develop.app_debug') == 0 && $level == 0) {
+        if (config('system.develop.app_debug') == 0 && $level == 0) {
             $trees = cache($cache_tag);
         }
 
@@ -129,7 +129,7 @@ class AdminMenu extends Common
                         continue;
                     }
                     // 多语言支持
-                    if (config('sys.multi_language') == 1) {
+                    if (config('system.sys.multi_language') == 1) {
                         $title = Db::name('admin_menu_lang')->where(['menu_id' => $v['id'], 'lang' => dblang('admin')])->value('title');
                         if ($title) {
                             $v['title'] = $title;
@@ -141,7 +141,7 @@ class AdminMenu extends Common
                 }
             }
             // 非开发模式，缓存菜单
-            if (config('develop.app_debug') == 0) {
+            if (config('system.develop.app_debug') == 0) {
                 cache($cache_tag, $trees);
             }
         }
@@ -162,7 +162,7 @@ class AdminMenu extends Common
     {
         $cache_tag = '_admin_menu'.ADMIN_ID.dblang('admin');
         $trees = [];
-        if (config('develop.app_debug') == 0 && $level == 0) {
+        if (config('system.develop.app_debug') == 0 && $level == 0) {
             $trees = cache($cache_tag);
         }
         if (empty($trees) || $update === true) {
@@ -189,7 +189,7 @@ class AdminMenu extends Common
                         continue;
                     }
                     // 多语言支持
-                    if (config('sys.multi_language') == 1) {
+                    if (config('system.sys.multi_language') == 1) {
                         $title = Db::name('admin_menu_lang')->where(['menu_id' => $v['id'], 'lang' => dblang('admin')])->value('title');
                         if ($title) {
                             $v['title'] = $title;
@@ -201,7 +201,7 @@ class AdminMenu extends Common
                 }
             }
             // 非开发模式，缓存菜单
-            if (config('develop.app_debug') == 0) {
+            if (config('system.develop.app_debug') == 0) {
                 cache($cache_tag, $trees);
             }
         }

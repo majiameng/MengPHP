@@ -64,7 +64,7 @@ class Admin extends Common
             $url = '';
             // 如果没有后台首页的登录权限，直接退出，避免出现死循环跳转
             if ($c_menu['url'] == 'admin/index/index') {
-                $url = ROOT_DIR.config('sys.admin_path');
+                $url = ROOT_DIR.config('system.sys.admin_path');
                 (new AdminUser())->logout();
             }
             return $this->error('['.$c_menu['title'].'] 访问权限不足', $url);

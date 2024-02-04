@@ -57,7 +57,7 @@ class Database extends Admin
             $data_list = Db::query("SHOW TABLE STATUS");
         } else {
             //列出备份文件列表
-            $path = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR;
+            $path = trim(config('system.databases.backup_path'), '/').DIRECTORY_SEPARATOR;
             if (!is_dir($path)) {
                 Dir::create($path);
             }
@@ -119,10 +119,10 @@ class Database extends Admin
 
             //读取备份配置
             $config = array(
-                'path'     => trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR,
-                'part'     => config('databases.part_size'),
-                'compress' => config('databases.compress'),
-                'level'    => config('databases.compress_level'),
+                'path'     => trim(config('system.databases.backup_path'), '/').DIRECTORY_SEPARATOR,
+                'part'     => config('system.databases.part_size'),
+                'compress' => config('system.databases.compress'),
+                'level'    => config('system.databases.compress_level'),
             );
 
             //检查是否有正在执行的任务
@@ -178,7 +178,7 @@ class Database extends Admin
         }
 
         $name  = date('Ymd-His', $id) . '-*.sql*';
-        $path  = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
+        $path  = trim(config('system.databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
         $files = glob($path);
         $list  = array();
         foreach($files as $name){
@@ -194,7 +194,7 @@ class Database extends Admin
         if(count($list) === $last[0]){
             foreach ($list as $item) {
                 $config = [
-                    'path'     => trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR,
+                    'path'     => trim(config('system.databases.backup_path'), '/').DIRECTORY_SEPARATOR,
                     'compress' => $item[2]
                 ];
                 $database = new dbOper($item, $config);
@@ -274,7 +274,7 @@ class Database extends Admin
         }
 
         $name  = date('Ymd-His', $id) . '-*.sql*';
-        $path = trim(config('databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
+        $path = trim(config('system.databases.backup_path'), '/').DIRECTORY_SEPARATOR.$name;
         array_map("unlink", glob($path));
         if(count(glob($path)) && glob($path)){
             return $this->error('备份文件删除失败，请检查权限！');

@@ -82,11 +82,11 @@ class Menu extends Admin
 
         $row = MenuModel::where('id', $id)->find();
         // admin模块 只允许超级管理员在开发模式下修改
-        if ($row['module'] == 'admin' && ADMIN_ID != 1 && config('develop.app_debug') == 1) {
+        if ($row['module'] == 'admin' && ADMIN_ID != 1 && config('system.develop.app_debug') == 1) {
             return $this->error('禁止修改系统模块！');
         }
         // 多语言
-        if (config('sys.multi_language') == 1) {
+        if (config('system.sys.multi_language') == 1) {
             $row['title'] = $row['lang']['title'];
         }
         

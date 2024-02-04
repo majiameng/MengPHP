@@ -66,15 +66,15 @@ class AdminAnnex extends Common
             return self::result('禁止上传php,html文件！', $from);
         }
         // 格式、大小校验
-        if ($file->checkExt(config('upload.upload_image_ext'))) {
+        if ($file->checkExt(config('system.upload.upload_image_ext'))) {
             $type = 'image';
-            if (config('upload.upload_image_size') > 0 && !$file->checkSize(config('upload.upload_image_size')*1024)) {
-                return self::result('上传的图片大小超过系统限制['.config('upload.upload_image_size').'KB]！', $from);
+            if (config('system.upload.upload_image_size') > 0 && !$file->checkSize(config('system.upload.upload_image_size')*1024)) {
+                return self::result('上传的图片大小超过系统限制['.config('system.upload.upload_image_size').'KB]！', $from);
             }
-        } else if ($file->checkExt(config('upload.upload_file_ext'))) {
+        } else if ($file->checkExt(config('system.upload.upload_file_ext'))) {
             $type = 'file';
-            if (config('upload.upload_file_size') > 0 && !$file->checkSize(config('upload.upload_file_size')*1024)) {
-                return self::result('上传的文件大小超过系统限制['.config('upload.upload_file_size').'KB]！', $from);
+            if (config('system.upload.upload_file_size') > 0 && !$file->checkSize(config('system.upload.upload_file_size')*1024)) {
+                return self::result('上传的文件大小超过系统限制['.config('system.upload.upload_file_size').'KB]！', $from);
             }
         } else if ($file->checkExt('avi,mkv')) {
             $type = 'media';
@@ -123,25 +123,25 @@ class AdminAnnex extends Common
                 if (!empty($water)) {// 传参优先
                     $image = \think\Image::open('.'.$data['file']);
                     if ($water == 'text') {
-                        if (is_file('.'.config('upload.text_watermark_font'))) {
-                            $image->text(config('upload.text_watermark_content'), '.'.config('upload.text_watermark_font'), config('upload.text_watermark_size'), config('upload.text_watermark_color'))
+                        if (is_file('.'.config('system.upload.text_watermark_font'))) {
+                            $image->text(config('system.upload.text_watermark_content'), '.'.config('system.upload.text_watermark_font'), config('system.upload.text_watermark_size'), config('system.upload.text_watermark_color'))
                             ->save('.'.$data['file']); 
                         }
                     } else {
-                        if (is_file('.'.config('upload.image_watermark_pic'))) {
-                            $image->water('.'.config('upload.image_watermark_pic'), config('upload.image_watermark_location'), config('upload.image_watermark_opacity'))
+                        if (is_file('.'.config('system.upload.image_watermark_pic'))) {
+                            $image->water('.'.config('system.upload.image_watermark_pic'), config('system.upload.image_watermark_location'), config('system.upload.image_watermark_opacity'))
                             ->save('.'.$data['file']); 
                         }
                     }
-                } else if (config('upload.image_watermark') == 1) {// 未传参，图片水印优先[开启图片水印]
+                } else if (config('system.upload.image_watermark') == 1) {// 未传参，图片水印优先[开启图片水印]
                     $image = \think\Image::open('.'.$data['file']);
-                    if (is_file('.'.config('upload.image_watermark_pic'))) {
-                        $image->water('.'.config('upload.image_watermark_pic'), config('upload.image_watermark_location'), config('upload.image_watermark_opacity'))
+                    if (is_file('.'.config('system.upload.image_watermark_pic'))) {
+                        $image->water('.'.config('system.upload.image_watermark_pic'), config('system.upload.image_watermark_location'), config('system.upload.image_watermark_opacity'))
                         ->save('.'.$data['file']); 
                     }
-                } else if (config('upload.text_watermark') == 1) {// 开启文字水印
-                    if (is_file('.'.config('upload.text_watermark_font'))) {
-                        $image->text(config('upload.text_watermark_content'), '.'.config('upload.text_watermark_font'), config('upload.text_watermark_size'), config('upload.text_watermark_color'))
+                } else if (config('system.upload.text_watermark') == 1) {// 开启文字水印
+                    if (is_file('.'.config('system.upload.text_watermark_font'))) {
+                        $image->text(config('system.upload.text_watermark_content'), '.'.config('system.upload.text_watermark_font'), config('system.upload.text_watermark_size'), config('system.upload.text_watermark_color'))
                         ->save('.'.$data['file']); 
                     }
                 }
@@ -150,7 +150,7 @@ class AdminAnnex extends Common
             // 缩略图
             if ($thumb != 'no') {
                 if (empty($thumb_type)) {
-                    $thumb_type = config('upload.thumb_type');
+                    $thumb_type = config('system.upload.thumb_type');
                 }
                 if (!empty($thumb) && strpos($thumb, ',')) {// 传参优先
                     $image = \think\Image::open('.'.$data['file']);
@@ -174,10 +174,10 @@ class AdminAnnex extends Common
                         $file_size+$thumb_size;
                         $file_count++;
                     }
-                } else if (!empty(config('upload.thumb_size'))) {
+                } else if (!empty(config('system.upload.thumb_size'))) {
                     $image = \think\Image::open('.'.$data['file']);
                     // 支持多种尺寸的缩略图
-                    $thumbs = explode(';', config('upload.thumb_size'));
+                    $thumbs = explode(';', config('system.upload.thumb_size'));
                     foreach ($thumbs as $k => $v) {
                         $t_size = explode('x', strtolower($v));
                         if (!isset($t_size[1])) {

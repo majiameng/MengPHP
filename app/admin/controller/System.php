@@ -64,7 +64,7 @@ class System extends Admin
             }
             // 系统模块配置保存
             if (!$types) return false;
-            $admin_path = config('sys.admin_path');
+            $admin_path = config('system.sys.admin_path');
             foreach ($types as $k => $v) {
                 if ($v == 'switch' && !isset($ids[$k])) {
                     ConfigModel::where('name', $k)->update(['value' => 0]);
@@ -74,11 +74,11 @@ class System extends Admin
                     $ids[$k] = json_encode($ids[$k], 1);
                 }
                 // 修改后台管理目录
-                if ($k == 'admin_path' && $ids[$k] != config('sys.admin_path')) {
-                    if (is_file(root_path().config('sys.admin_path')) && is_writable(root_path().config('sys.admin_path'))) {
-                        @rename(root_path().config('sys.admin_path'), root_path().$ids[$k]);
+                if ($k == 'admin_path' && $ids[$k] != config('system.sys.admin_path')) {
+                    if (is_file(root_path().config('system.sys.admin_path')) && is_writable(root_path().config('system.sys.admin_path'))) {
+                        @rename(root_path().config('system.sys.admin_path'), root_path().$ids[$k]);
                         if (!is_file(root_path().$ids[$k])) {
-                            $ids[$k] = config('sys.admin_path');
+                            $ids[$k] = config('system.sys.admin_path');
                         }
                         $admin_path = $ids[$k];
                     }
@@ -92,7 +92,7 @@ class System extends Admin
         }
 
         $tab_data = ['menu'=>[]];
-        $config_group = config('sys.config_group');
+        $config_group = config('system.sys.config_group');
         if(!empty($config_group)){
             foreach ($config_group as $key => $value) {
                 $arr = [];
