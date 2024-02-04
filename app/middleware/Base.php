@@ -21,13 +21,12 @@ class Base
     public function handle($request, \Closure $next)
     {
         $module = app('http')->getName();// 获取当前模块名称
-        define('BIND_MODULE',$module);
         $controller = request()->controller();
         $action = $request->action();
 
         // 系统版本
         $version = include_once(root_path().'version.php');
-        Config($version['mengphp'],'mengphp');
+        config($version['mengphp'],'mengphp');
 
         // 安装操作直接return
         if(defined('BIND_MODULE') && BIND_MODULE == 'install') return;
