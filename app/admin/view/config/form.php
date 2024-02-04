@@ -3,7 +3,7 @@
         <label class="layui-form-label">配置分组</label>
         <div class="layui-input-inline w300">
             <select name="group" class="field-group" type="select" lay-filter="group">
-                {volist name=":config('sys.config_group')" id="v"}
+                {volist name=":config('system.sys.config_group')" id="v"}
                     <option value="{$key}"{if condition="$key eq input('param.group')"}selected{/if}>[{$key}]{$v}</option>
                 {/volist}
             </select>

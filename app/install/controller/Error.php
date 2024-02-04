@@ -11,13 +11,20 @@
  * +------------------------------------------------------
  */
 namespace app\install\controller;
-use app\admin\model\AdminUser as UserModel;
 use app\common\controller\Common;
-use think\Db;
+use app\admin\model\AdminUser as UserModel;
+use think\exception\ValidateException;
+use think\facade\Db;
 use think\facade\View;
 
 class Error extends Common
 {
+    /**
+     * Db Config
+     * @var string[]
+     */
+    public $config;
+
     public function index($step = 0)
     {
         switch ($step) {
@@ -81,8 +88,8 @@ class Error extends Common
     private function step4()
     {
         if ($this->request->isPost()) {
-            if (!is_writable(app_path()().'database.php')) {
-                return $this->error('[app/database.php]无读写权限！');
+            if (!is_writable(root_path().'.example.env')) {
+                return $this->error('[.env]无读写权限！');
             }
             $data = input('post.');
             $data['type'] = 'mysql';
@@ -94,40 +101,54 @@ class Error extends Common
                 'prefix|数据库前缀' => 'require|regex:^[a-z0-9]{1,20}[_]{1}',
                 'cover|覆盖数据库' => 'require|in:0,1',
             ];
-            $validate = $this->validate($data, $rule);
-            if (true !== $validate) {
-                return $this->error($validate);
+            $message = [
+                'hostname.require' => '服务器地址不能为空',
+                'hostport.require' => '数据库端口不能为空',
+                'database.require' => '数据库名称不能为空',
+                'username.require' => '数据库账号不能为空',
+                'prefix.require' => '数据库前缀不能为空',
+                'cover.require' => '覆盖数据库不能为空',
+            ];
+            try {
+                validate($rule,$message)->check($data);
+            } catch (ValidateException $e) {
+                // 验证失败 输出错误信息
+                $this->error($e->getError());
             }
             $cover = $data['cover'];
             unset($data['cover']);
-            $config = include app_path().'database.php';
+            // 获取原始数据库配置
+            $this->config = config('database.connections.mysql');
             foreach ($data as $k => $v) {
-                if (array_key_exists($k, $config) === false) {
+                if (array_key_exists($k, $this->config) === false) {
                     return $this->error('参数'.$k.'不存在！');
                 }
             }
             // 不存在的数据库会导致连接失败
             $database = $data['database'];
             unset($data['database']);
-            // 创建数据库连接
-            $db_connect = Db::connect($data);
+
+            //设置配置文件
+            $this->config = array_merge($this->config,$data);
+            config(['connections'=>['mysql'=>$this->config]],'database');
+
             // 检测数据库连接
             try{
-                $db_connect->execute('select version()');
+                Db::execute('select version()');
             }catch(\Exception $e){
                 $this->error('数据库连接失败，请检查数据库配置！');
             }
 
             // 不覆盖检测是否已存在数据库
             if (!$cover) {
-                $check = $db_connect->execute('SELECT * FROM information_schema.schemata WHERE schema_name="'.$database.'"');
+                $check = Db::execute('SELECT * FROM information_schema.schemata WHERE schema_name="'.$database.'"');
                 if ($check) {
                     $this->error('该数据库已存在，如需覆盖，请选择覆盖数据库！');
                 }
             }
             // 创建数据库
-            if (!$db_connect->execute("CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET utf8")) {
-                return $this->error($db_connect->getError());
+            if (!Db::execute("CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET utf8")) {
+                return $this->error(Db::getError());
             }
             $data['database'] = $database;
             // 生成配置文件
@@ -147,8 +168,7 @@ class Error extends Common
         $account = input('post.account');
         $password = input('post.password');
 
-        $config = include app_path().'database.php';
-        if (empty($config['hostname']) || empty($config['database']) || empty($config['username'])) {
+        if (empty(env('DB_HOST')) || empty(env('DB_NAME')) || empty(env('DB_USER'))) {
             return $this->error('请先点击测试数据库连接！');
         }
         if (empty($account) || empty($password)) {
@@ -164,10 +184,10 @@ class Error extends Common
         }
         // 导入系统初始数据库结构
         // 导入SQL
-        $sql_file = app_path().'install/sql/install.sql';
+        $sql_file = app_path().'sql/install.sql';
         if (file_exists($sql_file)) {
             $sql = file_get_contents($sql_file);
-            $sql_list = parse_sql($sql, 0, ['mengphp_' => $config['prefix']]);
+            $sql_list = parse_sql($sql, 0, ['meng_' => env('DB_PREFIX')]);
             if ($sql_list) {
                 $sql_list = array_filter($sql_list);
                 foreach ($sql_list as $v) {
@@ -195,7 +215,7 @@ class Error extends Common
         if (!$res) {
             return $this->error($user->getError() ? $user->getError() : '管理员账号设置失败！');
         }
-        file_put_contents(app_path().'install/install.lock', date('Y-m-d H:i:s'));
+        file_put_contents(app_path().'install.lock', date('Y-m-d H:i:s'));
         //站点密匙
         $auth = password_hash(request()->time(), PASSWORD_DEFAULT);
         $hs_auth = <<<INFO
@@ -213,10 +233,13 @@ class Error extends Common
  */
  return ['key' => '{$auth}'];
 INFO;
-        file_put_contents(app_path().'extra/hs_auth.php', $hs_auth);
+        file_put_contents(config_path().'/mengphp_auth.php', $hs_auth);
         // 获取站点根目录
         $root_dir = request()->baseFile();
         $root_dir  = preg_replace(['/index.php$/'], [''], $root_dir);
+
+        //创建后台入口文件
+        self::mkAdmin();
         return $this->success('系统安装成功，欢迎您使用MengPHP后台管理框架', $root_dir.'admin.php');
     }
 
@@ -259,8 +282,8 @@ INFO;
             ['dir', './../backup', '读写', '读写', 'ok'],
             ['dir', './static', '读写', '读写', 'ok'],
             ['dir', './upload', '读写', '读写', 'ok'],
-            ['file', './../app/database.php', '读写', '读写', 'ok'],
             ['file', './../version.php', '读写', '读写', 'ok'],
+            ['file', './../.env', '读写', '读写', 'ok'],
             ['file', './admin.php', '读写', '读写', 'ok'],
         ];
         foreach ($items as &$v) {
@@ -322,69 +345,61 @@ INFO;
     private function mkDatabase(array $data)
     {
         $code = <<<INFO
-<?php
+APP_DEBUG = true
+
+DB_TYPE = mysql
+DB_HOST = {$data['hostname']}
+DB_NAME = {$data['database']}
+DB_USER = {$data['username']}
+DB_PASS = {$data['password']}
+DB_PORT = {$data['hostport']}
+DB_PREFIX = {$data['prefix']}
+DB_CHARSET = utf8
+
+DEFAULT_LANG = zh-cn
+INFO;
+        file_put_contents(root_path().'.env', $code);
+        // 判断写入是否成功
+        \think\facade\Env::load(root_path().'.env');
+        if (empty(env('DB_NAME')) || env('DB_NAME') != $data['database']) {
+            return $this->error('[.env]数据库配置写入失败！');
+            exit;
+        }
+    }
+
+    /**
+     * 生成数据库配置文件
+     * @return array
+     */
+    private function mkAdmin()
+    {
+        $code = '<?php
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2019 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: majiameng <666@majiameng.com>
+// | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-return [
-    // 数据库类型
-    'type'            => 'mysql',
-    // 服务器地址
-    'hostname'        => '{$data['hostname']}',
-    // 数据库名
-    'database'        => '{$data['database']}',
-    // 用户名
-    'username'        => '{$data['username']}',
-    // 密码
-    'password'        => '{$data['password']}',
-    // 端口
-    'hostport'        => '{$data['hostport']}',
-    // 连接dsn
-    'dsn'             => '',
-    // 数据库连接参数
-    'params'          => [],
-    // 数据库编码默认采用utf8
-    'charset'         => 'utf8',
-    // 数据库表前缀
-    'prefix'          => '{$data['prefix']}',
-    // 数据库调试模式
-    'debug'           => true,
-    // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-    'deploy'          => 0,
-    // 数据库读写是否分离 主从式有效
-    'rw_separate'     => false,
-    // 读写分离后 主服务器数量
-    'master_num'      => 1,
-    // 指定从服务器序号
-    'slave_no'        => '',
-    // 是否严格检查字段是否存在
-    'fields_strict'   => true,
-    // 数据集返回类型
-    'resultset_type'  => 'array',
-    // 自动写入时间戳字段
-    'auto_timestamp'  => false,
-    // 时间字段取出后的默认时间格式
-    'datetime_format' => 'Y-m-d H:i:s',
-    // 是否需要进行SQL性能分析
-    'sql_explain'     => false,
-    // Builder类
-    'builder'         => '',
-    // Query类
-    'query'           => '\\think\\db\\Query',
-];
-INFO;
-        file_put_contents(app_path().'database.php', $code);
-        // 判断写入是否成功
-        $config = include app_path().'database.php';
-        if (empty($config['database']) || $config['database'] != $data['database']) {
-            return $this->error('[app/database.php]数据库配置写入失败！');
-            exit;
-        }
+
+// [ 应用入口文件 ]
+namespace think;
+
+require __DIR__ . "/../vendor/autoload.php";
+
+// 执行HTTP应用并响应
+$http = (new App())->http;
+
+define("ENTRANCE", "admin");
+$response = $http->name("admin")->run();
+
+$response->send();
+
+$http->end($response);';
+
+
+        file_put_contents(public_path().'/admin.php', $code);
     }
 }

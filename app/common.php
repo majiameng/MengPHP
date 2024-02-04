@@ -523,7 +523,7 @@ if (!function_exists('editor')) {
     function editor($obj = [], $name = '', $url = '') {
         $js_path = config('view_replace_str.__PUBLIC_JS__').'/editor/';
         if (empty($name)) {
-            $name = config('sys.editor');
+            $name = config('system.sys.editor');
         }
 
         if (empty($url)){

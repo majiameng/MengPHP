@@ -148,7 +148,7 @@ class AdminRole extends Common
             }
             $role_auth = json_decode($auth, true);
             // 非开发模式，缓存数据
-            if (config('develop.app_debug') == 0) {
+            if (config('system.develop.app_debug') == 0) {
                 cache('role_auth_'.$login['role_id'], $role_auth);
             }
         }

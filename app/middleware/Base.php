@@ -21,22 +21,19 @@ class Base
     public function handle($request, \Closure $next)
     {
         $module = app('http')->getName();// 获取当前模块名称
-        define('BIND_MODULE',$module);
         $controller = request()->controller();
         $action = $request->action();
 
         // 系统版本
         $version = include_once(root_path().'version.php');
-        Config($version['mengphp'],'mengphp');
+        config($version['mengphp'],'mengphp');
 
         // 安装操作直接return
         if(defined('BIND_MODULE') && BIND_MODULE == 'install') return;
 
         // 设置系统配置
         $configAll = ConfigModel::getConfig();
-        foreach ($configAll as $name=>$config){
-            config($config,$name);
-        }
+        config($configAll,'system');
 
         // 判断模块是否存在且已安装
         $theme = 'default';
@@ -47,7 +44,7 @@ class Base
         }
         // 获取站点根目录
         $root_dir = request()->baseFile();
-        $root_dir  = preg_replace(['/index.php$/', '/plugins.php$/', '/'.config('sys.admin_path').'$/'], ['', '', ''], $root_dir);
+        $root_dir  = preg_replace(['/index.php$/', '/plugins.php$/', '/'.config('system.sys.admin_path').'$/'], ['', '', ''], $root_dir);
         define('ROOT_DIR', $root_dir);
 
         //静态目录扩展配置
@@ -115,7 +112,7 @@ class Base
                 $module = config('default_module');
             }
 
-            if (config('base.site_status') != 1) {
+            if (config('system.base.site_status') != 1) {
                 echo '站点已关闭！';
                 exit;
             }

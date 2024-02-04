@@ -24,7 +24,7 @@ class Config extends Admin
     public function index($group = 'base')
     {
         $tab_data = ['menu'=>[]];
-        $config_group = config('sys.config_group');
+        $config_group = config('system.sys.config_group');
         if(!empty($config_group)){
             foreach ($config_group as $key => $value) {
                 $arr = [];
