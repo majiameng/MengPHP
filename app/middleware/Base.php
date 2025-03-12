@@ -29,8 +29,8 @@ class Base
         config($version['mengphp'],'mengphp');
 
         // 安装操作直接return
-        if(defined('BIND_MODULE') && BIND_MODULE == 'install') return;
-
+        if((defined('BIND_MODULE') && BIND_MODULE == 'install') || $module == 'install') return $next($request);
+        
         // 设置系统配置
         $configAll = ConfigModel::getConfig();
         config($configAll,'system');
